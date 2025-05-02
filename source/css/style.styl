@@ -69,6 +69,9 @@ code
 #main
     @media mq-normal
         column(main-column)
+        margin-left: 21%;
+        margin-top: 48px;
+        transition: margin-left 0.3s ease; /* 添加过渡动画(收起侧边栏时) */
     @media mq-tablet
         if sidebar
             column(main-column-tablet)
@@ -78,6 +81,10 @@ code
         width: 100%
     @media mq-mini
         width: 100%
+
+#main.collapsed {
+    width: 100%;
+}
 
 #music-player
     position: fixed;

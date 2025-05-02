@@ -87,6 +87,18 @@ div.article-meta-button
         &:before
             content: "#"
 
+// collapsed article - 收起侧边栏时文章内容的样式
+.article-entry.collapsed {
+    padding: 0 50px
+}
+.article-header.collapsed {
+    padding-left: 50px
+}
+.article-meta.collapsed {
+    margin-left: -50px;
+    padding-left: 30px;
+}
+
 .article-entry
     @extend $base-style
     clearfix()
@@ -468,3 +480,29 @@ ol.toc
   font-size: 12px;
   width: 100%;
 }
+
+/* 中间的工具栏样式(收起侧边栏按钮...) */
+#toolbar-mid
+    position: fixed;
+    left: 21%; /* 假设侧边栏宽度为 250px，根据实际调整 */
+    top: 50%;
+    margin-top: 48px;   
+    transform: translateY(-50%);
+    width: 26px;
+    height: 100%;
+    background-color: transparent; /* transparent 透明背景 */
+
+.toggle-btn
+    position: fixed;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 30px;
+    background-color: #f7f7f7;
+    border: 1px solid #f7f7f7;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1px;

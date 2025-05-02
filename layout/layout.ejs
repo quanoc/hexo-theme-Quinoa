@@ -9,7 +9,12 @@
             <% if (theme.customize.sidebar) { %>
                 <%- partial('common/sidebar') %>
             <% } %>
-            <section id="main"><%- body %></section>
+            <div id="toolbar-mid">
+                <button id="toggle-sidebar" class="toggle-btn" title="收起/展开侧边栏">
+                    <span id="toggle-sidebar-btn" style="color: #38b7ea;" class="fa fa-angle-left"></span>
+                </button>
+            </div>
+            <section id="main"><%- body %></section>    
         </div>
         <%- partial('common/footer', null, {cache: !config.relative_link}) %>
         <%- partial('common/scripts') %>
@@ -19,6 +24,46 @@
             data-src="https://music.163.com/outchain/player?type=0&id=12850293495&auto=1&height=120">
         </iframe>
     </div>
+    <div id="toTop" class="fa fa-angle-up"></div>
     <div id="music-player-fade" class="fa fa-play-circle"></div>
 </body>
 </html>
+
+<script>
+$(document).ready(function() {
+    $('#toggle-sidebar').on('click', function() {
+        $('#sidebar').toggleClass('collapsed');
+        $('.article-entry').toggleClass('collapsed');
+        $('.article-header').toggleClass('collapsed');
+        $('.article-meta').toggleClass('collapsed');
+        $('#main').toggleClass('collapsed');
+        $('#toggle-sidebar-btn').toggleClass('fa-angle-left').toggleClass('fa-angle-right');
+    });
+ 
+    // 「介绍」通过监听 sidebar的高度变化来实现footer的位置适配
+    const mainHeight = $('#main').height();
+    const categoriesElement = $('#categories');
+    // 创建 ResizeObserver 实例
+    const resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) {
+            const { width, height } = entry.contentRect;
+            // 获取视口高度
+            const viewportHeight = window.innerHeight;
+            const ninetyVhInPixels = viewportHeight * 0.6;
+            console.log('内容高度', height, mainHeight, viewportHeight);
+            if (height > ninetyVhInPixels && mainHeight < viewportHeight) { 
+                $('#main').height('75vh');
+                $('#sidebar').height('80vh');
+            }
+        }
+    });
+
+    // 开始监听目标元素
+    resizeObserver.observe(categoriesElement[0]);
+
+    // 当页面卸载时，停止监听，避免内存泄漏
+    $(window).on('unload', function() {
+        resizeObserver.disconnect();
+    });
+});
+</script>

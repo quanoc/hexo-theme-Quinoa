@@ -1,7 +1,9 @@
 #header
     @extend $block
     background: white
-    position: relative
+    @media mq-normal
+        position: fixed
+        width: 100%
     a, a:visited
         white-space: nowrap
         transition: 0.2s ease
@@ -183,6 +185,7 @@ $nav-link
         margin: 0
         height: header-sub-height
         .search-form-input
+            width: 100%
             display: none
             @media mq-mini
                 display: block

@@ -92,6 +92,17 @@
         event.preventDefault();
     });
 
+    $(document).ready(function() {
+        $('#toggle-sidebar').on('click', function() {
+            $('#main').toggleClass('collapsed');
+            $('#sidebar').toggleClass('collapsed');
+            $('.article-indent').toggleClass('collapsed');
+            $('.article-meta').toggleClass('collapsed');
+            $('.article-more-link').toggleClass('collapsed');
+            $('#toggle-sidebar-btn').toggleClass('fa-angle-left').toggleClass('fa-angle-right');
+        });
+    });
+
     $(document).ready(function () {
         if ($('#music-player-fade').is(':visible') && $('#music-player').length > 0) {
             $('#music-player-fade').on('click', function () {

@@ -61,6 +61,9 @@ code
     background-image: url(logo-url)
     background-size: logo-width logo-height
 
+.layout-wrap
+    border-left: 1px solid #f7f7f7;
+
 #container
     position: relative
     & > .outer
@@ -69,10 +72,10 @@ code
 #main
     @media mq-normal
         column(main-column)
-        margin-left: 21%;
         margin-top: 48px;
-        transition: margin-left 0.3s ease; /* 添加过渡动画(收起侧边栏时) */
+        transition: padding-left 0.5s ease;
     @media mq-tablet
+        transition: padding-left 0.5s ease;
         if sidebar
             column(main-column-tablet)
         else
@@ -81,6 +84,10 @@ code
         width: 100%
     @media mq-mini
         width: 100%
+
+#main-wrap
+    @media mq-normal
+        min-height: 80%
 
 #main.collapsed {
     width: 100%;

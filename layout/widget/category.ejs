@@ -84,7 +84,9 @@
                 } 
                 if(branch.articles && branch.articles.length) {
                     branch.articles.forEach(function(post){
-                        %> <li class="file<%- (is_post() && post._id == page._id) ? ' active' : '' %>"><a href="<%- post.path %>"><%- post.title %></a></li> <%
+                        %> <li class="file<%- (is_post() && post._id == page._id) ? ' active' : '' %>">
+                            <a href="<%- post.path %>" onclick="onclickRoute(event, '<%- post.path %>')"><%- post.title %></a>
+                        </li> <%
                     });
                 }
              %> </ul> <%
@@ -96,7 +98,43 @@
         %>
     </div>
     <script>
-        $(document).ready(function() {
+        onclickRoute = function(e, path) {
+            e.preventDefault();
+            // change hash to trigger route change
+            window.location.hash = `${path}`;
+            // scroll to top
+            $('body, html').animate({ scrollTop: 0 }, 600);
+        }
+
+        postFetch = async function(path) {
+            try {
+                const response = await fetch(`/${path}`);
+                if (!response.ok) {
+                    throw new Error(`加载 ${path} 失败`);
+                }
+                const html = await response.text();
+                $('#main').html(html);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        handleRouteChange = function() {
+            var pathV = window.location.hash;
+            console.log(`handleRouteChange: ${pathV}`);
+            if(pathV === '#/') {
+                window.location.href = '/' + window.location.hash.slice(2) || '';
+                return;
+            }
+            
+            var hash = window.location.hash.slice(2) || '';
+            if(hash) {
+                postFetch(hash);
+            }
+        }
+
+        // expand categories
+        listenCategories = function() {
             var iconFolderOpenClass  = 'fa-folder-open';
             var iconFolderCloseClass = 'fa-folder';
             var iconAllExpandClass = 'fa-angle-double-down';
@@ -105,7 +143,6 @@
             // 左键单独展开目录
             $(document).on('click', '#categories a[data-role="directory"]', function (event) {
                 event.preventDefault();
-
                 var icon = $(this).children('.fa');
                 var expanded = icon.hasClass(iconFolderOpenClass);
                 var subtree = $(this).siblings('ul');
@@ -156,7 +193,16 @@
                     $('#categories li ul').slideUp({ duration: 100 });
                     icon.addClass(iconAllExpandClass);
                 }
-            });  
+            });
+        }
+  
+        $(document).ready(function() {
+            // init route change
+            handleRouteChange();
+            // listen hash change
+            window.addEventListener('hashchange', handleRouteChange);
+            // listen categories
+            listenCategories();
         });
     </script>
 <% } %>

@@ -212,7 +212,12 @@
 
     function gotoLink ($item) {
         if ($item && $item.length) {
-            location.href = $item.attr('data-url');
+            var path = $item.attr('data-url');
+            window.location.hash = `${path}`;
+            $main.removeClass('show');
+            // scroll to top
+            $('body, html').animate({ scrollTop: 0 }, 600);
+            //location.href = $item.attr('data-url');
         }
     }
 

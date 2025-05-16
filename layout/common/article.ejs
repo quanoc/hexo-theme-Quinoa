@@ -13,7 +13,7 @@
             <%- partial('post/banner') %>
         <% } %>
         <% if (post.link || post.title) { %>
-            <header class="article-header">
+            <header class="article-header article-indent">
                 <% if (post.layout != 'page') { %>
                     <div class="article-meta">
                         <%- partial('post/category') %>
@@ -42,7 +42,7 @@
             </header>
         <% } %>
         <%- partial('post/gallery') %>
-        <div class="article-entry" itemprop="articleBody">
+        <div class="article-entry article-indent" itemprop="articleBody">
         <% var show_all_content = true %>
         <% if (index) { %>
             <% if (post.excerpt || post.description) { %>
@@ -75,9 +75,10 @@
             <%- post.content %>
             </div>
         <% } else { %>
-            </div>   
+            </div> 
             <div class="article-more-link">
-                <a href="<%- url_for(post.path) %>#more"><%= __('article.more') %></a>
+                <a href="<%- url_for(post.path) %>#more"
+                    onclick="onclickRoute(event, '<%- url_for(post.path) %>#more')"><%= __('article.more') %></a>
             </div>
         <% } %>
         <footer class="article-footer">

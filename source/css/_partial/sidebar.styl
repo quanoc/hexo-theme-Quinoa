@@ -2,20 +2,18 @@
     @media mq-normal
         column(sidebar-column)
         margin-top: 48px
-        position: fixed
-        max-height: 90vh
+        max-height: 85%
         transition: transform 0.3s ease; /* 添加过渡动画-用于收起侧栏 */
-        overflow-y: auto
-        overflow-x: hidden
-        border-right: 1px solid #eee
     @media mq-tablet
         column(sidebar-column-tablet)
+        transition: transform 0.3s ease;
     @media mq-mobile
-        width: 10px;
+        display: none;
 
 /* 侧边栏向左移出可视区域 */
 #sidebar.collapsed {
     transform: translateX(-100%);
+    position: absolute;
 }
 /* 侧边栏隐藏时，调整按钮位置 */
 #sidebar.collapsed + #toolbar-mid {
@@ -67,14 +65,11 @@
     //border-radius: 4px
     padding: 20px
     .widget-title
-        position: fixed
-        width: 21%
-        box-sizing: border-box
-        height: 49px
+        height: 48px
     h3
         line-height: 37.3px
         background: color-meta-head
-        margin: -20px 0 0 -19px
+        margin: -20px -20px 0 -19px
         padding: 0 20px
         border: 1px solid #f7f7f7
         border-radius: 4px 4px 0 0
@@ -153,10 +148,10 @@
     margin: 8px
     position: fixed
     @media mq-mobile
-        width: 52px
-        height: 52px
-        font-size: 34px
-        line-height: 52px
+        width: 48px
+        height: 48px
+        font-size: 32px
+        line-height: 48px
     @media mq-mini
         width: 48px
         height: 48px
@@ -224,7 +219,7 @@
     text-shadow: 0 1px 0 #FFFFFF
     font-size: 13px
     ul
-        margin-top: 28px
+        margin-top: -1px
         margin-bottom: 0
         //li:last-child
             //padding-bottom: 0

@@ -4,7 +4,7 @@ article
     background-color: color-border-stretch
 .article
     margin: /* block-margin */ 0 0 15px 0
-    border-left: 1px solid #eee
+    border-left: 1px solid #f7f7f7 /* eee */
 
 .article-inner
     @extend $block
@@ -87,17 +87,24 @@ div.article-meta-button
         &:before
             content: "#"
 
-// collapsed article - 收起侧边栏时文章内容的样式
-.article-entry.collapsed {
-    padding: 0 50px
+// collapsed
+.article-indent.collapsed {
+    padding-left: 80px
 }
-.article-header.collapsed {
-    padding-left: 50px
-}
+
 .article-meta.collapsed {
-    margin-left: -50px;
-    padding-left: 30px;
+    margin-left: -80px;
+    padding-left: 80px;
 }
+
+.article-more-link.collapsed {
+    padding-left: 65px;
+}
+
+.article-type-page
+    .article-inner
+        .article-entry
+            min-height: 400px
 
 .article-entry
     @extend $base-style
@@ -260,16 +267,22 @@ div .article-more-link
     .fa-share
         margin-right: 5px
 
+articleNavStyles()
+    margin: block-margin 0
+    &:before
+        absolute-center(8px)
+        content: ""
+        border-radius: 50%
+        background: color-default + #222
+
 #article-nav
     clearfix()
     position: relative
     @media mq-normal
-        margin: block-margin 0
-        &:before
-            absolute-center(8px)
-            content: ""
-            border-radius: 50%
-            background: color-default + #222
+        articleNavStyles()
+    @media mq-tablet
+        articleNavStyles()
+    
 
 .article-nav-link-wrap
     text-decoration: none
@@ -283,18 +296,31 @@ div .article-more-link
     @media mq-normal
         width: 50%
         margin-top: 0
+    @media mq-tablet
+        width: 50%
+        margin-top: 0
+
+articleNavNewerStyles()
+    float: left
+    text-align: right
+    padding-right: 20px
 
 #article-nav-newer
     @media mq-normal
-        float: left
-        text-align: right
-        padding-right: 20px
+        articleNavNewerStyles()
+    @media mq-tablet
+        articleNavNewerStyles()
+
+articleNavOlderStyles()
+    float: right
+    text-align: left
+    padding-left: 20px
 
 #article-nav-older
     @media mq-normal
-        float: right
-        text-align: left
-        padding-left: 20px
+        articleNavOlderStyles()
+    @media mq-tablet
+        articleNavOlderStyles()
 
 .article-nav-caption
     letter-spacing: 2px
@@ -491,6 +517,8 @@ ol.toc
     width: 26px;
     height: 100%;
     background-color: transparent; /* transparent 透明背景 */
+    @media mq-mobile
+        display: none;
 
 .toggle-btn
     position: fixed;

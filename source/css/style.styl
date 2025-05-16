@@ -73,9 +73,9 @@ code
     @media mq-normal
         column(main-column)
         margin-top: 48px;
-        transition: padding-left 0.5s ease;
+        transition: width 0.1s ease;
     @media mq-tablet
-        transition: padding-left 0.5s ease;
+        transition: width 0.1s ease;
         if sidebar
             column(main-column-tablet)
         else
@@ -91,6 +91,7 @@ code
 
 #main.collapsed {
     width: 100%;
+    top: 0;
 }
 
 #music-player

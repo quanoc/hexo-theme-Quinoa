@@ -41,7 +41,7 @@ widgets: # default use category only
     # - archive
     # - tag
     # - tagcloud
-    # - links
+    - links
     
 # Excerpt 
 ## Auto creat excerpt with not <!--more-->
@@ -59,7 +59,7 @@ search:
 # History version 
 history_control: # make you wiki has history version control in page
     enable: false
-    server_link: https://gitee.com/quano # recommend use GitHub https://github.com
+    server_link: https://github.com/quanoc # recommend use GitHub https://github.com
     user: quano
     repertory: wiki
     branch: master

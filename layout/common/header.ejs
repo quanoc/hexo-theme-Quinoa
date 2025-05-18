@@ -23,6 +23,9 @@
                 </nav>
             <% } %>
             <%- partial('search/index') %>
+            <div id="color-toggle-btn">
+                <i class="fa fa-adjust fa-lg"></i>
+            </div>
         </div>
     </div>
     <div id="main-nav-mobile" class="header-sub header-inner">
@@ -41,3 +44,46 @@
         </table>
     </div>
 </header>
+<script>
+// 十六进制转 RGB
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  let r = parseInt(hex.slice(0, 2), 16);
+  let g = parseInt(hex.slice(2, 4), 16);
+  let b = parseInt(hex.slice(4, 6), 16);
+  return { r, g, b };
+}
+
+// 调整颜色
+function adjustColor(color, adjustment) {
+  let { r, g, b } = hexToRgb(color);
+  r = Math.min(255, Math.max(0, r + adjustment)); // 确保不超过范围
+  g = Math.min(255, Math.max(0, g + adjustment));
+  b = Math.min(255, Math.max(0, b + adjustment));
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+// RGB 转十六进制
+function rgbToHex(r, g, b) {
+  return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
+}
+
+const BackColors = ['#FFFFFF', '#FFFFF0', '#F0FFF0']; // Define background colors
+const InitColorIndex = 1;
+function changeBackgroundColor(newColor) {
+    $('.outer, .widget-wrap h3, body, .article-inner, .article-inner .article-meta').css('background-color', newColor);
+    $('.article-entry blockquote').css('background-color', adjustColor(newColor, -10)).css('border-left','4px solid #c8c8c8');
+    $('.toc-article').css('background-color', adjustColor(newColor, -5));
+    $('.timeline-row .content').css('background-color', adjustColor(newColor, -2));
+}
+
+$(document).ready(function() {
+    let currentIndex = InitColorIndex;
+    changeBackgroundColor(BackColors[InitColorIndex]);
+    $('#color-toggle-btn').click(function() {
+        currentIndex = (currentIndex + 1) % BackColors.length;
+        const newColor = BackColors[currentIndex];
+        changeBackgroundColor(newColor);
+    });
+});
+</script>

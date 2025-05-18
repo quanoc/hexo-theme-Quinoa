@@ -100,6 +100,7 @@
     <script>
         onclickRoute = function(e, path) {
             e.preventDefault();
+            console.log(`onclickRoute: ${path}`);
             // change hash to trigger route change
             window.location.hash = `${path}`;
             // scroll to top
@@ -119,17 +120,15 @@
             }
         }
 
-        handleRouteChange = function() {
+        handleHashRouteChange = function() {
             var pathV = window.location.hash;
-            console.log(`handleRouteChange: ${pathV}`);
-            if(pathV === '#/') {
-                window.location.href = '/' + window.location.hash.slice(2) || '';
-                return;
-            }
-            
+            console.log(`handleHashRouteChange: ${pathV}`);
+            console.log(`hash: ${hash}`);
             var hash = window.location.hash.slice(2) || '';
             if(hash) {
                 postFetch(hash);
+            } else {
+                postFetch('list');
             }
         }
 
@@ -198,9 +197,9 @@
   
         $(document).ready(function() {
             // init route change
-            handleRouteChange();
+            handleHashRouteChange();
             // listen hash change
-            window.addEventListener('hashchange', handleRouteChange);
+            window.addEventListener('hashchange', handleHashRouteChange);
             // listen categories
             listenCategories();
         });

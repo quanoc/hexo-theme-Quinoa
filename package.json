@@ -16,7 +16,7 @@
     "version": "6.3.0"
   },
   "dependencies": {
-    "hexo": "^3.6.0",
+    "hexo": "^6.3.0",
     "hexo-autonofollow": "^1.0.1",
     "hexo-directory-category": "^1.0.5",
     "hexo-generator-archive": "^1.0.0",

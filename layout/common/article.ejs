@@ -13,7 +13,7 @@
             <%- partial('post/banner') %>
         <% } %>
         <% if (post.link || post.title) { %>
-            <header class="article-header article-indent">
+            <header class="article-header page-indent">
                 <% if (post.layout != 'page') { %>
                     <div class="article-meta">
                         <%- partial('post/category') %>
@@ -42,7 +42,7 @@
             </header>
         <% } %>
         <%- partial('post/gallery') %>
-        <div class="article-entry article-indent" itemprop="articleBody">
+        <div class="article-entry page-indent" itemprop="articleBody">
         <% var show_all_content = true %>
         <% if (index) { %>
             <% if (post.excerpt || post.description) { %>

@@ -1,12 +1,11 @@
-<% if (page.layout === 'post') { %>
-    <!-- Post layout：only body -->
-    <section id="post-main"><%- body %></section>
-<% } else if (page.layout === 'categories' || page.layout === 'tags'
-    || page.layout === 'page') { %>
+<% if (['post', 'page', 'tags', 'categories'].includes(page.layout)) { %>
     <section id="post-main"><%- body %></section>
 <% } else if (is_archive() || is_category() || is_tag()) { %>
     <section id="post-main"><%- body %></section>
-<% } else { %>
+<% } else if (page.__index) { %>
+    <section id="post-main"><%- body %></section>
+<% } else if (page.layout === 'indexs') { %>
+    <!-- <p>Page keys: <%= Object.keys(page) %></p> -->
     <%- partial('common/head') %>
     <body>
         <div id="container">
@@ -35,7 +34,10 @@
         </div>
         <div id="toTop" class="fa fa-angle-up"></div>
         <div id="music-player-fade" class="fa fa-play-circle"></div>
-    </body>   
+    </body>
+    <section id="post-main"><%- body %></section>
+<% } else { %>
+    <section id="post-main"><%- body %></section>
 <% } %>
 
 <script>
@@ -73,5 +75,12 @@
             const path = $(this).attr('href');
             anchorInterceptor(path);
         });
+    });
+    $(document).ready(function() {
+        if ($('#toggle-sidebar-btn').hasClass('fa-angle-right')) {
+            $('.page-indent').toggleClass('collapsed');
+            $('.article-meta').toggleClass('collapsed');
+            $('.article-more-link').toggleClass('collapsed');
+        }
     });
 </script>

@@ -92,14 +92,19 @@
         event.preventDefault();
     });
 
+    const sidebarToggle = function() {
+        $('#main').toggleClass('collapsed');
+        $('#sidebar').toggleClass('collapsed');
+        $('.page-indent').toggleClass('collapsed');
+        $('.article-meta').toggleClass('collapsed');
+        $('.article-more-link').toggleClass('collapsed');
+        $('#toggle-sidebar-btn').toggleClass('fa-angle-left').toggleClass('fa-angle-right');
+    }
+
     $(document).ready(function() {
+        sidebarToggle();
         $('#toggle-sidebar').on('click', function() {
-            $('#main').toggleClass('collapsed');
-            $('#sidebar').toggleClass('collapsed');
-            $('.article-indent').toggleClass('collapsed');
-            $('.article-meta').toggleClass('collapsed');
-            $('.article-more-link').toggleClass('collapsed');
-            $('#toggle-sidebar-btn').toggleClass('fa-angle-left').toggleClass('fa-angle-right');
+            sidebarToggle()
         });
     });
 

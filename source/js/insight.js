@@ -47,7 +47,8 @@
             case 'CATEGORIES':
             case 'TAGS':
                 $searchItems = array.map(function (item) {
-                    return searchItem(type === 'CATEGORIES' ? 'folder' : 'tag', item.name, item.slug, null, item.permalink);
+                    var path_folder = type === 'CATEGORIES' ? 'categories' : 'tags';
+                    return searchItem(type === 'CATEGORIES' ? 'folder' : 'tag', item.name, item.slug, null, '/' + path_folder + '/' +item.slug);
                 });
                 break;
             default:

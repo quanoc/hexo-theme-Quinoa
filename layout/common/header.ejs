@@ -68,8 +68,8 @@ function rgbToHex(r, g, b) {
   return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 }
 
-const BackColors = ['#FFFFFF', '#FFFFF0', '#F0FFF0']; // Define background colors
-const InitColorIndex = 1;
+const BackColors = ['#FFFFFF', '#F0FFF0', '#FFFFF0']; // Define background colors
+const InitColorIndex = 0;
 function changeBackgroundColor(newColor) {
     $('.outer, .widget-wrap h3, body, .article-inner, .article-inner .article-meta').css('background-color', newColor);
     $('.article-entry blockquote').css('background-color', adjustColor(newColor, -10)).css('border-left','4px solid #c8c8c8');

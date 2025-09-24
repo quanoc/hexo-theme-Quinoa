@@ -66,18 +66,19 @@
             }
         %>
         <% 
-            function visitTreePosts(branch, perExpand) {
+            function visitTreePosts(branch, perExpand, parentId = '') {
+                const currentId = parentId ? `${parentId}-${branch._id}` : branch._id;
              %> <ul class="unstyled" id="tree" <% if(perExpand) { %>style="display: block;"<% } %>> <%
                 if(branch.children && branch.children.length) {
                     branch.children.forEach(function(category){
                     %>
                     <li class="directory<%- category.selected ? ' open' : '' %>">
-                        <a href="#" data-role="directory">
+                        <a href="#" data-role="directory" data-id="<%- currentId %>-<%- category._id %>">
                             <i class="fa fa-folder<%- (perExpand || category.selected) ? '-open' : '' %>"></i>
                             &nbsp;
                             <%- category.name %>
                         </a>
-                        <% visitTreePosts(category, perExpand) %>
+                        <% visitTreePosts(category, perExpand, currentId) %>
                     </li> 
                     <%  
                     });
@@ -85,7 +86,8 @@
                 if(branch.articles && branch.articles.length) {
                     branch.articles.forEach(function(post){
                         %> <li class="file<%- (is_post() && post._id == page._id) ? ' active' : '' %>">
-                            <a href="<%- post.path %>" onclick="onclickRoute(event, '<%- post.path %>')"><%- post.title %></a>
+                            <a href="<%- post.path %>" data-id="<%- currentId %>-<%- post._id %>"
+                                onclick="onclickRoute(event, '<%- post.path %>')"><%- post.title %></a>
                         </li> <%
                     });
                 }
@@ -105,6 +107,39 @@
             window.location.hash = `${path}`;
             // scroll to top
             $('body, html').animate({ scrollTop: 0 }, 600);
+            expandCategories(path);
+        }
+
+        expandCategories = function(path) {
+            // 查找对应文章项
+            const articleLink = $(`#categories .file a[href="${encodeURI(path)}"]`);
+            if (articleLink.length === 0) {
+                console.log('未找到对应的文章项');
+                return;
+            }
+
+            // 获取文章项的 data-id
+            const articleId = articleLink.data('id');
+            const idParts = articleId.split('-');
+            let currentId = '';
+            for (let i = 0; i < idParts.length - 1; i++) {
+                currentId += (currentId ? '-' : '') + idParts[i];
+                const dirLink = $(`#categories a[data-role="directory"][data-id="${currentId}"]`);
+                if (dirLink.length > 0) {
+                    const icon = dirLink.children('.fa');
+                    const subtree = dirLink.siblings('ul');
+                    if (!icon.hasClass('fa-folder-open')) {
+                        icon.removeClass('fa-folder').addClass('fa-folder-open');
+                        subtree.slideDown({ duration: 100 });
+                    }
+                }
+            }
+
+            // 滚动到文章项所在位置
+            const articleItem = articleLink.closest('li');
+            $('#categories').animate({
+                scrollTop: articleItem.offset().top - $('#categories').offset().top + $('#categories').scrollTop()
+            }, 600);
         }
 
         postFetch = async function(path) {
@@ -114,7 +149,13 @@
                     throw new Error(`加载 ${path} 失败`);
                 }
                 const html = await response.text();
-                $('#main').html(html);
+                const main = document.getElementById('main');
+                main.innerHTML = html;
+                //$('#main').html(html);
+                // 手动触发 MathJax 渲染（2.x 版本）
+                if (window.MathJax) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, main]);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -122,8 +163,8 @@
 
         handleHashRouteChange = function() {
             var pathV = window.location.hash;
-            console.log(`handleHashRouteChange: ${pathV}`);
-            console.log(`hash: ${hash}`);
+            // console.log(`handleHashRouteChange: ${pathV}`);
+            // console.log(`hash: ${hash}`);
             var hash = window.location.hash.slice(2) || '';
             if(hash) {
                 postFetch(hash);

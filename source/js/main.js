@@ -102,7 +102,6 @@
     }
 
     $(document).ready(function() {
-        sidebarToggle();
         $('#toggle-sidebar').on('click', function() {
             sidebarToggle()
         });

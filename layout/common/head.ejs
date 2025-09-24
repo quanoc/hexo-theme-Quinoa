@@ -2,7 +2,38 @@
 <html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <head>
     <meta charset="utf-8">
-    <%
+    <!-- <script src="<%-'/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML'%>"></script> -->
+    <!-- 配置公式识别格式 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <!-- 2.x 配置 -->
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\$', '\$']]
+            },
+             // 输出格式
+            jax: ["input/TeX", "output/HTML-CSS"], // 或 "output/SVG"
+            // 配置 HTML-CSS 字体
+            "HTML-CSS": {
+                webFont: "none",
+                availableFonts: ["Asana Math", "STIX", "Latin Modern", ],
+                preferredFont: "Asana Math",
+                imageFont: "TeX"
+            },
+            // 配置 SVG
+            "SVG": {
+                font: "STIX-Web",
+                blacker: 0.01,
+                linebreaks: { automatic: true }
+            },
+            // 性能优化
+            showProcessingMessages: false,
+            messageStyle: "none",
+            showMathMenu: false, // 禁用右键菜单
+            menuSettings: { zoom: "Double-Click" }
+        });
+      </script>
+<%
         function capitalize (str) { return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase() }
         var title = page.title;
         if (is_archive()) {

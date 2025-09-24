@@ -5,7 +5,6 @@
 <% } else if (page.__index) { %>
     <section id="post-main"><%- body %></section>
 <% } else if (page.layout === 'indexs') { %>
-    <!-- <p>Page keys: <%= Object.keys(page) %></p> -->
     <%- partial('common/head') %>
     <body>
         <div id="container">
@@ -49,6 +48,27 @@
         $('body, html').animate({ scrollTop: 0 }, 600);
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var container = document.getElementById('container');
+        if (!container) {
+            var path = window.location.pathname;
+            var origin = window.location.origin;
+            console.log('path:',path, '\norigin:',origin);
+            console.log('document:', document)
+            window.location.href = origin + '#' + path;
+        }
+    });
+
+    $(document).ready(function() {
+        if ($('#toggle-sidebar-btn').hasClass('fa-angle-right')) {
+            $('.page-indent').toggleClass('collapsed');
+            $('.article-meta').toggleClass('collapsed');
+            $('.article-more-link').toggleClass('collapsed');
+        }
+        // init color
+        changeBackgroundColor(BackColors[InitColorIndex]);
+    });
+
     $(document).ready(function() {
         $('#page-nav').on('click', 'a', function(event) {
             event.preventDefault();
@@ -75,13 +95,5 @@
             const path = $(this).attr('href');
             anchorInterceptor(path);
         });
-    });
-    $(document).ready(function() {
-        if ($('#toggle-sidebar-btn').hasClass('fa-angle-right')) {
-            $('.page-indent').toggleClass('collapsed');
-            $('.article-meta').toggleClass('collapsed');
-            $('.article-more-link').toggleClass('collapsed');
-        }
-        changeBackgroundColor(BackColors[InitColorIndex]);
     });
 </script>

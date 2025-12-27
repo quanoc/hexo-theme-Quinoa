@@ -74,7 +74,7 @@
                     %>
                     <li class="directory<%- category.selected ? ' open' : '' %>">
                         <a href="#" data-role="directory" data-id="<%- currentId %>-<%- category._id %>">
-                            <i class="fa fa-folder<%- (perExpand || category.selected) ? '-open' : '' %>"></i>
+                            <i class="fa fa-folder<%- (perExpand || category.selected) ? '-open-o' : '-o' %>"></i>
                             &nbsp;
                             <%- category.name %>
                         </a>
@@ -87,7 +87,7 @@
                     branch.articles.forEach(function(post){
                         %> <li class="file<%- (is_post() && post._id == page._id) ? ' active' : '' %>">
                             <a href="<%- post.path %>" data-id="<%- currentId %>-<%- post._id %>"
-                                onclick="onclickRoute(event, '<%- post.path %>')"><%- post.title %></a>
+                                onclick="onclickRoute(event, '<%- post.path %>', 1)"><%- post.title %></a>
                         </li> <%
                     });
                 }
@@ -101,73 +101,223 @@
     </div>
     <script>
         onclickRoute = function(e, path) {
+            onclickRoute(e, path, 0)
+        }
+        onclickRoute = function(e, path, type) {
             e.preventDefault();
-            console.log(`onclickRoute: ${path}`);
-            // change hash to trigger route change
-            window.location.hash = `${path}`;
+            // 修改 URL（不刷新页面）
+            history.pushState({ articlePath: path }, '', '#' + path);
+            loadArticleContent(path, type); 
             // scroll to top
             $('body, html').animate({ scrollTop: 0 }, 600);
-            expandCategories(path);
         }
 
-        expandCategories = function(path) {
-            // 查找对应文章项
-            const articleLink = $(`#categories .file a[href="${encodeURI(path)}"]`);
-            if (articleLink.length === 0) {
+        expandCategories = function(path, type) {
+            if (type != 1) {
+                // 1. 先收起所有已展开的目录（重置状态）
+                $('#categories a[data-role="directory"]').each(function() {
+                    const $dirLink = $(this);
+                    const $icon = $dirLink.children('.fa');
+                    const $subtree = $dirLink.siblings('ul');
+                    
+                    // 只处理已展开的目录
+                    if ($icon.hasClass('fa-folder-open-o')) {
+                        $icon.removeClass('fa-folder-open-o').addClass('fa-folder-o');
+                        $subtree.slideUp({ duration: 100 });
+                    }
+                });
+            }
+
+            // 2. 查找对应文章项（兼容带#more后缀的URL）
+            const encodedPath = encodeURI(path);
+            let $articleLink = $(`#categories .file a[href="${encodedPath}"]`);
+            
+            // 若未找到，尝试去掉#more后缀查找
+            if (!$articleLink.length) {
+                const pathWithoutMore = path.split("#more")[0];
+                $articleLink = $(`#categories .file a[href="${pathWithoutMore}"]`);
+            }
+
+            // 若未找到，尝试去掉#more后缀查找
+            if (!$articleLink.length) {
+                const pathWithoutSection = path.split("?section")[0];
+                $articleLink = $(`#categories .file a[href="${pathWithoutSection}"]`);
+            }
+
+            if (!$articleLink.length) {
                 console.log('未找到对应的文章项');
                 return;
             }
 
-            // 获取文章项的 data-id
-            const articleId = articleLink.data('id');
+            // 3. 展开目标目录层级
+            const articleId = $articleLink.data('id');
             const idParts = articleId.split('-');
             let currentId = '';
-            for (let i = 0; i < idParts.length - 1; i++) {
-                currentId += (currentId ? '-' : '') + idParts[i];
-                const dirLink = $(`#categories a[data-role="directory"][data-id="${currentId}"]`);
-                if (dirLink.length > 0) {
-                    const icon = dirLink.children('.fa');
-                    const subtree = dirLink.siblings('ul');
-                    if (!icon.hasClass('fa-folder-open')) {
-                        icon.removeClass('fa-folder').addClass('fa-folder-open');
-                        subtree.slideDown({ duration: 100 });
+
+            idParts.slice(0, -1).forEach((part, i) => { // 简化循环逻辑
+                currentId += (i === 0 ? '' : '-') + part;
+                const $dirLink = $(`#categories a[data-role="directory"][data-id="${currentId}"]`);
+                
+                if ($dirLink.length) {
+                    const $icon = $dirLink.children('.fa');
+                    const $subtree = $dirLink.siblings('ul');
+                    
+                    if (!$icon.hasClass('fa-folder-open-o')) {
+                        $icon.removeClass('fa-folder-o').addClass('fa-folder-open-o');
+                        $subtree.slideDown({ duration: 100 });
                     }
                 }
-            }
+            });
 
-            // 滚动到文章项所在位置
-            const articleItem = articleLink.closest('li');
-            $('#categories').animate({
-                scrollTop: articleItem.offset().top - $('#categories').offset().top + $('#categories').scrollTop()
-            }, 600);
+            // 4. 滚动到文章项位置（优化DOM查找）
+            const $articleItem = $articleLink.closest('li');
+            const scrollTop = $articleItem.offset().top - $('#categories').offset().top + $('#categories').scrollTop();
+            $('#categories').animate({ scrollTop }, 600);
         }
 
         postFetch = async function(path) {
             try {
-                const response = await fetch(`/${path}`);
+                const response = await fetch(`${path}`);
                 if (!response.ok) {
                     throw new Error(`加载 ${path} 失败`);
                 }
                 const html = await response.text();
                 const main = document.getElementById('main');
                 main.innerHTML = html;
-                //$('#main').html(html);
+
+                renderPage(main, path)
+
+                // 重新执行scripts，让解密组件生效
+                const scripts = main.querySelectorAll('script[data-pjax]');
+                scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                    } else {
+                        newScript.textContent = oldScript.textContent;
+                    }
+                    // 拷贝属性
+                    Array.from(oldScript.attributes).forEach(attr => {
+                        newScript.setAttribute(attr.name, attr.value);
+                    });
+                    document.body.appendChild(newScript);
+                });
+
                 // 手动触发 MathJax 渲染（2.x 版本）
                 if (window.MathJax) {
-                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, main]);
+                   MathJax.Hub.Queue(["Typeset", MathJax.Hub, main]);
                 }
+                if (window.mermaid) {
+                    mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+                }
+                addPostEventListener(path);
+                // 4. 触发不蒜子统计，并更新PV显示
+                bszCaller.fetch("//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback", function(a) {
+                    bszTag.texts(a), bszTag.shows()
+                })                     
             } catch (error) {
                 console.error(error);
             }
         }
 
+        renderPage = function(main, path) {
+            // 1. 如果当前页面根本没有 mermaid 代码块，就啥也不干，直接返回
+            if (!main.querySelector('.mermaid')) {
+                return;
+            }
+            // 2. 如果之前已经加载过 mermaid了（全局只加载一次，节省流量和性能）
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true });  // 重新初始化配置
+                mermaid.init(undefined, main.querySelectorAll('.mermaid')); // 重新渲染当前页面的图
+                return;
+            }
+            // 3. 第一次遇到 mermaid，才真正动态加载 mermaid.min.js
+            const newScript = document.createElement('script');
+            //newScript.src = 'https://unpkg.com/mermaid@10/dist/mermaid.min.js';
+            newScript.src = '/libs/mermaid/10.9.5/mermaid.min.js'
+            newScript.crossOrigin = 'anonymous';
+            newScript.onload = function () {
+                // js 加载完成后再初始化
+                window.mermaid.initialize({
+                startOnLoad: false,      // 我们手动调用 init，不要它自动找整个 document
+                theme: 'default',        // 或 'forest'、'dark'、'neutral' 随便你
+                flowchart: { useMaxWidth: true },
+                securityLevel: 'loose'   // 允许 innerHTML 等，动态页面必须
+                });
+
+                // 只渲染当前容器里的 mermaid 代码块，不影响其他页面历史残留
+                window.mermaid.init(undefined, main.querySelectorAll('.mermaid'));
+            };
+            newScript.onerror = function () {
+                console.error('Mermaid 加载失败');
+            };
+            // 5. 把 script 标签塞到 head（或 body 末尾都行）
+            document.head.appendChild(newScript);
+        }
+
+        // 监听(categories、tags等)点击事件，做链接的拦截处理
+        addPostEventListener = function(path) {
+            if (path === 'categories' || path === '/categories') {
+                $('.category-list-link').on('click', function(event) {
+                    event.preventDefault();
+                    const path = '#/' + $(this).attr('href');
+                    anchorInterceptor(path);
+                });
+            } else if (path === 'tags' || path === '/tags') {
+                $('.tag-cloud').on('click', 'a', function(event) {
+                    event.preventDefault();
+                    const path = '#/' +$(this).attr('href');
+                    anchorInterceptor(path);
+                });
+            }
+            anchorComponentOnclick();
+            loadbackgroundColor();
+        }
+
+        loadbackgroundColor = function() {
+            const colorIndex = localStorage.getItem("ColorIndex");
+            const currentIndex = (colorIndex) % BackColors.length;
+            const newColor = BackColors[currentIndex];
+            changeBackgroundColor(newColor);
+        }
+
+        function checkUrlAndScroll() {
+            const params = new URLSearchParams(window.location.search);
+            const sectionId = params.get('section');
+            if (sectionId) {
+                scrollToSection(sectionId);
+            }
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 60;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+
+        // 首次加载检查
+        checkUrlAndScroll();
+
+
+        loadArticleContent = function(path, expandType) {
+            if('/' != path) {
+                postFetch(path);
+            } else {
+                postFetch('list');
+            }
+            console.log('path:' + path);
+            expandCategories(path, expandType);
+        }
+
         handleHashRouteChange = function() {
             var pathV = window.location.hash;
-            // console.log(`handleHashRouteChange: ${pathV}`);
-            // console.log(`hash: ${hash}`);
+            console.log(pathV)
             var hash = window.location.hash.slice(2) || '';
             if(hash) {
                 postFetch(hash);
+                expandCategories('/' + hash, 0);
             } else {
                 postFetch('list');
             }
@@ -175,8 +325,8 @@
 
         // expand categories
         listenCategories = function() {
-            var iconFolderOpenClass  = 'fa-folder-open';
-            var iconFolderCloseClass = 'fa-folder';
+            var iconFolderOpenClass  = 'fa-folder-open-o';
+            var iconFolderCloseClass = 'fa-folder-o';
             var iconAllExpandClass = 'fa-angle-double-down';
             var iconAllPackClass = 'fa-angle-double-up';
             // Handle directory-tree expansion:

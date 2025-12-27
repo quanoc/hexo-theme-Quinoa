@@ -2,7 +2,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title"><span><%= __('widget.tag_cloud') %></span></h3>
         <div class="widget tagcloud">
-            <%- tagcloud() %>
+            <%- tagcloud({amount: 5, orderby: 'name'}) %>
         </div>
     </div>
 <% } %>

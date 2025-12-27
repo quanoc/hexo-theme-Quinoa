@@ -69,7 +69,7 @@ function rgbToHex(r, g, b) {
 }
 
 const BackColors = ['#FFFFFF', '#F0FFF0', '#FFFFF0']; // Define background colors
-const InitColorIndex = 0;
+let ColorIndex = 0;
 function changeBackgroundColor(newColor) {
     $('.outer, .widget-wrap h3, body, .article-inner, .article-inner .article-meta').css('background-color', newColor);
     $('.article-entry blockquote').css('background-color', adjustColor(newColor, -10)).css('border-left','4px solid #c8c8c8');
@@ -78,12 +78,12 @@ function changeBackgroundColor(newColor) {
 }
 
 $(document).ready(function() {
-    let currentIndex = InitColorIndex;
-    changeBackgroundColor(BackColors[InitColorIndex]);
+    changeBackgroundColor(BackColors[ColorIndex]);
     $('#color-toggle-btn').click(function() {
-        currentIndex = (currentIndex + 1) % BackColors.length;
-        const newColor = BackColors[currentIndex];
+        ColorIndex = (ColorIndex + 1) % BackColors.length;
+        const newColor = BackColors[ColorIndex];
         changeBackgroundColor(newColor);
+        localStorage.setItem("ColorIndex", ColorIndex);
     });
 });
 </script>

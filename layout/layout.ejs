@@ -65,35 +65,43 @@
             $('.article-meta').toggleClass('collapsed');
             $('.article-more-link').toggleClass('collapsed');
         }
+        const colorIndex = localStorage.getItem("ColorIndex");
         // init color
-        changeBackgroundColor(BackColors[InitColorIndex]);
+        changeBackgroundColor(BackColors[colorIndex]);
     });
 
-    $(document).ready(function() {
-        $('#page-nav').on('click', 'a', function(event) {
-            event.preventDefault();
-            const path = $(this).attr('href');
-            anchorInterceptor(path);
-        });
-        $('.tag-cloud').on('click', 'a', function(event) {
-            event.preventDefault();
-            const path = $(this).attr('href');
-            anchorInterceptor(path);
-        });
+    anchorComponentOnclick = function(event) {
+        // 文章的头链接 | 点击监听
         $('.article-category-link').on('click', function(event) {
             event.preventDefault();
             const path = $(this).attr('href');
             anchorInterceptor(path);
+        });
+        // 目录的跳转 | 点击监听
+        $('.toc-link').on('click', function(event) {
+            event.preventDefault();
+            const params = new URLSearchParams(window.location.search);
+            //const sectionId = $(this).attr('href').replace('?section=', '');
+            // 更新 URL，但不刷新页面
+            const idx = decodeURIComponent($(this).attr('href')).slice(1);
+            if (idx != 'ndefined') {
+                params.set('section', idx);
+                const curPath = window.location.pathname + window.location.hash.split('?section=')[0];
+                const newUrl = curPath + '?' + params.toString();
+                window.history.pushState({}, '', newUrl);
+                // 滚动到对应位置
+                scrollToSection(idx);
+            }
         });
         $('.tag-link-link').on('click', function(event) {
             event.preventDefault();
             const path = $(this).attr('href');
             anchorInterceptor(path);
         });
-        $('.category-list-link').on('click', function(event) {
+        $('#page-nav').on('click', 'a', function(event) {
             event.preventDefault();
             const path = $(this).attr('href');
             anchorInterceptor(path);
         });
-    });
+    }
 </script>

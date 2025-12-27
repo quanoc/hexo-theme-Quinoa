@@ -1,0 +1,52 @@
+/* Tip提示框核心样式 */
+
+/* tip.css */
+.tip-container {
+  position: relative;
+  margin: 8px 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-height: 80px;
+  min-width: 265px;
+  font-family: Georgia, "Times New Roman", "Microsoft Yahei", serif;
+}
+
+/* 核心修改：图标定位为左上角 */
+.tip-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 0.6rem; /* 距离顶部0.5rem （15px），而非垂直居中 */
+  height: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.tip-wrapper {
+  width: 95%;
+  box-sizing: border-box;
+  padding: 0px 12px 1px 0;
+  margin-left: 43px;
+}
+.tip-content p {
+  padding-top: 10px;
+  margin: 10px 0;
+  line-height: 1.6em;
+}
+.tip-content ul,
+.tip-content ol {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+}
+
+/* 响应式适配（移动端优化） */
+@media (max-width: 768px) {
+  .tip-container {
+  }
+  .tip-icon {
+    left: 0.6rem;
+    top: 0.4rem;
+    font-size: 1rem;
+  }
+}

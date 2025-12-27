@@ -6,12 +6,10 @@
 <meta property="og:site_name" content="Nova`Wiki">
 <% if (theme.plugins.mathjax && post.mathjax && !index) { %>
     <!-- <%- partial('plugin/mathjax') %> -->
-    <!-- <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
+
     <script src="https://cdn.bootcss.com/mathjax/2.7.2/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script async>
-        console.log(1212111111)
+    <script>
         window.MathJax = {
           tex: {
             inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -20,6 +18,9 @@
         };
       </script>
 <% } %>
+<!-- mermaid config -->
+<!-- <% if (theme.plugins.mermaid && post.mermaid && !index) { %> -->
+<!-- <% } %> -->
 <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
     <% if (post.referrer) { %>
         <meta name="referrer" content="no-referrer" />
@@ -120,17 +121,6 @@
 <!-- baidu url auto push script -->
 <script type="text/javascript">
     !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
-</script>     
-<% } %>
-
-<!-- mermaid config -->
-<% if (theme.plugins.mermaid && post.mermaid && !index) { %>
-<script src="/libs/mermaid/9.4.3/mermaid.min.js"></script>
-<!-- https://unpkg.com/mermaid@9.4.3/dist/mermaid.min.js -->
-<script async>
-    if (window.mermaid) {
-        mermaid.initialize({theme: 'default'});
-    }
 </script>
 <% } %>
 
@@ -139,6 +129,19 @@
 .table-container table {
     border: 2px solid #dfe1e2;
     /* min-width: 70%; */
+}
+._table {
+    border: 2px solid #dfe1e2;
+}
+._table th {
+    font-weight: bold;
+    border: 1px solid #dfe1e2;
+    padding: 0.5em;
+    background-color: #f0f0f0;
+}
+._table td{
+    border: 1px solid #dfe1e2;
+    padding: 10px 5px;
 }
 .table-container th {
     font-weight: bold;

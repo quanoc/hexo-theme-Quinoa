@@ -1,4 +1,4 @@
-# hexo-theme-Quano
+# hexo-theme-Quinoa
 
 [中文版文档](./README_zh-CN.md)
 
@@ -19,32 +19,32 @@ some features:
 
 ## Installation
 
-`hexo-theme-Quano` kernel code base on [icarus](https://github.com/ppoffice/hexo-theme-icarus), so you can read base function document with [icarus wiki](https://github.com/ppoffice/hexo-theme-icarus/wiki).
+`hexo-theme-Quinoa` kernel code base on [icarus](https://github.com/ppoffice/hexo-theme-icarus), so you can read base function document with [icarus wiki](https://github.com/ppoffice/hexo-theme-icarus/wiki).
 
 ### Install
 
 **Note: This theme requires Hexo v3.6 or late.**
 
-1. Go to your hexo folder, then clone this theme `Quano` into `themes/`
+1. Go to your hexo folder, then clone this theme `Quinoa` into `themes/`
 
 ```bash
 $ cd your-hexo-directory
-$ git clone https://github.com/quanoc/hexo-theme-Quano.git themes/Quano
+$ git clone https://github.com/quanoc/hexo-theme-Quinoa.git themes/Quinoa
 ```
 
 2. Rewrite to cover some default page template in site folder
 
 ```bash
-$ cp -rf themes/Quano/_source/* source/
-$ cp -rf themes/Quano/_scaffolds/* scaffolds/
+$ cp -rf themes/Quinoa/_source/* source/
+$ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 ```
 
 3. Rename the `_config.yml.example` to `_config.yml` so you can config theme
 
 ```bash
-$ cp -f themes/Quano/_config.yml.example themes/Quano/_config.yml
+$ cp -f themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 # edit and customize it
-$ vim themes/Quano/_config.yml
+$ vim themes/Quinoa/_config.yml
 ```
 
 most configurations are same as the [icarus](https://github.com/ppoffice/hexo-theme-icarus) theme, you can read with [icarus wiki](https://github.com/ppoffice/hexo-theme-icarus/wiki) at first.
@@ -78,7 +78,7 @@ Modify `theme` setting in site config file `_config.yml` to **`Wikitten`**.
 ### Update
 
 ```bash
-$ cd themes/Quano
+$ cd themes/Quinoa
 $ git pull origin master
 ```
 
@@ -134,7 +134,7 @@ nofollow:
     - <your site url domain> # eg: zthxxx.me
 ```
 
-In **theme** config file `Quano/_config.yml`, you can read more detailed commentary for some options.
+In **theme** config file `Quinoa/_config.yml`, you can read more detailed commentary for some options.
 
 **Before the start, plase first change my personal info to yourself, including options that `profile` `social_links` `history_control` and so on.**
 

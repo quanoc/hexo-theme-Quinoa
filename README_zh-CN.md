@@ -1,4 +1,4 @@
-# hexo-theme-Quano
+# hexo-theme-Quinoa
 
 [English Page](./README.md)
 
@@ -22,33 +22,33 @@
 
 ## 安装说明
 
-`hexo-theme-quano` 核心功能代码基于 [Wikitten](https://github.com/zthxxx/hexo-theme-Wikitten)，所以你可以在 [Wikitten](https://github.com/zthxxx/hexo-theme-Wikitten) 阅读基础功能文档。
+`hexo-theme-quinoa` 核心功能代码基于 [Wikitten](https://github.com/zthxxx/hexo-theme-Wikitten)，所以你可以在 [Wikitten](https://github.com/zthxxx/hexo-theme-Wikitten) 阅读基础功能文档。
 
 ### 安装
 
 **注意：本主题需要 Hexo v3.6 及以上版本。**
 >推荐node版本：v18.19.0；npm版本：10.2.3
 
-1. 进入你的 hexo 站点文件夹，克隆 `Quano` 主题到 `themes/` 路径下
+1. 进入你的 hexo 站点文件夹，克隆 `Quinoa` 主题到 `themes/` 路径下
 
 ```bash
 $ cd your-hexo-directory
-$ git clone https://github.com/quanoc/hexo-theme-Quano.git themes/Quano
+$ git clone https://github.com/quanoc/hexo-theme-Quinoa.git themes/Quinoa
 ```
 
 2. 覆盖站点目录中一些默认页面模板
 
 ```bash
-$ cp -rf themes/Quano/_source/* source/
-$ cp -rf themes/Quano/_scaffolds/* scaffolds/
+$ cp -rf themes/Quinoa/_source/* source/
+$ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 ```
 
 3. 重命名主题中的 `_config.yml.example` 到 `_config.yml`，然后可以使用配置文件配置主题
 
 ```bash
-$ cp -f themes/Quano/_config.yml.example themes/Quano/_config.yml
+$ cp -f themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 # 编辑配置文件，定制你的配置项
-$ vim themes/Quano/_config.yml
+$ vim themes/Quinoa/_config.yml
 ```
 
 大部分的配置项都和 [icarus](https://github.com/ppoffice/hexo-theme-icarus) 主题中的配置项一样，你可以首先去阅读一下 [icraus 的文档](https://github.com/ppoffice/hexo-theme-icarus/wiki)。
@@ -77,12 +77,12 @@ $ npm i -S hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-ge
 
 ### 启用
 
-修改站点 `_config.yml` 文件中的 `theme` 选项为 **`Quano`**。
+修改站点 `_config.yml` 文件中的 `theme` 选项为 **`Quinoa`**。
 
 ### 更新
 
 ```bash
-$ cd themes/Quano
+$ cd themes/Quinoa
 $ git pull origin master
 ```
 
@@ -140,7 +140,7 @@ nofollow:
     - <your site url domain> # eg: zthxxx.me
 ```
 
-在**主题**配置文件 `Quano/_config.yml` 中，你能阅读到各个选项更多的细节配置。
+在**主题**配置文件 `Quinoa/_config.yml` 中，你能阅读到各个选项更多的细节配置。
 
 **在开始之前，首先请将主题配置文件示例中「我」的信息修改为「你」自己的信息，其中包括 `profile` `social_links` `history_control`等配置项。**
 

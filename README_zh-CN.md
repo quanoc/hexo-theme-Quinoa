@@ -14,7 +14,7 @@
 - 支持全文搜索
 - 支持markdown语法，博客加密，音乐盒
 
-![Site Preview](./source/images/SitePreview.jpg)
+![Site Preview](./source/images/SitePreview2.jpg)
 
 ![mobile preview](./source/images/mobile1.jpg) ![mobile preview](./source/images/mobile0.jpg)
 

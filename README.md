@@ -12,7 +12,7 @@ some features:
 - Supports full-text search
 - Supports Markdown syntax, blog encryption, and music player integration
 
-![Site Preview](./source/images/SitePreview.jpg)
+![Site Preview](./source/images/SitePreview2.jpg)
 
 ![mobile preview](./source/images/mobile1.jpg) ![mobile preview](./source/images/mobile0.jpg)
 

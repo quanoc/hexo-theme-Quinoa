@@ -27,6 +27,30 @@
                             classifiedArticles['_root'].push(post_info);
                         }
                     });
+                    function getSortKey(title) {
+                        var firstChar = title.charAt(0);
+                        if (/[0-9]/.test(firstChar)) {
+                            return { type: 0, char: firstChar };
+                        } else if (/[a-zA-Z]/.test(firstChar)) {
+                            return { type: 1, char: firstChar.toLowerCase() };
+                        } else {
+                            return { type: 2, char: firstChar };
+                        }
+                    }
+                    function sortArticles(a, b) {
+                        var keyA = getSortKey(a.title);
+                        var keyB = getSortKey(b.title);
+                        if (keyA.type !== keyB.type) {
+                            return keyA.type - keyB.type;
+                        }
+                        if (keyA.type === 2) {
+                            return a.title.localeCompare(b.title, 'zh-CN');
+                        }
+                        return a.title.localeCompare(b.title, 'en');
+                    }
+                    Object.keys(classifiedArticles).forEach(function(key) {
+                        classifiedArticles[key].sort(sortArticles);
+                    });
                     return classifiedArticles;
                 }
                 function prepareQuery(categories, parent) {

@@ -47,6 +47,7 @@
 <script>
 // 十六进制转 RGB
 function hexToRgb(hex) {
+  if (!hex) return null;
   hex = hex.replace('#', '');
   let r = parseInt(hex.slice(0, 2), 16);
   let g = parseInt(hex.slice(2, 4), 16);
@@ -56,6 +57,7 @@ function hexToRgb(hex) {
 
 // 调整颜色
 function adjustColor(color, adjustment) {
+    if (!color) return null;
   let { r, g, b } = hexToRgb(color);
   r = Math.min(255, Math.max(0, r + adjustment)); // 确保不超过范围
   g = Math.min(255, Math.max(0, g + adjustment));

@@ -59,7 +59,7 @@ div.article-meta-button
         padding: 4px 8px
         margin: 2px 0
         font-size: 85%
-        background: #555
+        # background: #555
         border-radius: 3px
         text-transform: none
         &:hover
@@ -523,9 +523,23 @@ ol.toc
     width: 26px;
     height: 100%;
     background-color: transparent; /* transparent 透明背景 */
+    z-index: 1000
+    @media mq-mini
+        left: 0
+        right: auto
+        top: 50%
+        transform: translateY(-50%)
+        width: 26px
+        height: auto
     @media mq-mobile
-        display: none;
-
+        left: 0
+        right: auto
+        top: 50%
+        transform: translateY(-50%)
+        width: 26px
+        height: auto
+    @media mq-tablet
+        left: 96%;
 .toggle-btn
     position: fixed;
     top: 40%;
@@ -539,4 +553,12 @@ ol.toc
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 1px;
+    margin-left: 1px
+    @media mq-mini
+        left: 0
+        right: auto
+        border-radius: 0 8px 8px 0
+    @media mq-mobile
+        left: 0
+        right: auto
+        border-radius: 0 8px 8px 0

@@ -9,6 +9,21 @@
         transition: transform 0.3s ease;
     @media mq-mobile
         display: none;
+    @media mq-mini
+        position: fixed
+        left: 0
+        top: 0
+        transform: translateX(-100%)
+        transition: transform 0.3s ease
+        z-index: 999
+        width: 250px
+        height: 100%
+        background: #fff
+        margin-top: 0
+        max-height: 100%
+    @media mq-mini
+        &.expanded
+            transform: translateX(0)
 
 /* 侧边栏向左移出可视区域 */
 #sidebar.collapsed {

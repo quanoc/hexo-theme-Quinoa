@@ -129,11 +129,12 @@
         }
         onclickRoute = function(e, path, type) {
             e.preventDefault();
+            // 添加 fullpage=1 参数表示整页打开
+            const separator = path.includes('?') ? '&' : '?';
+            const fullPath = path + separator + 'fullpage=1';
             // 修改 URL（不刷新页面）
-            history.pushState({ articlePath: path }, '', '#' + path);
-            loadArticleContent(path, type); 
-            // scroll to top
-            $('body, html').animate({ scrollTop: 0 }, 600);
+            history.pushState({ articlePath: fullPath }, '', '#' + fullPath);
+            loadArticleContent(path, type);
         }
 
         expandCategories = function(path, type) {
@@ -207,7 +208,21 @@
                 }
                 const html = await response.text();
                 const main = document.getElementById('main');
-                main.innerHTML = html;
+                
+                // 解析HTML，提取内容部分
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // 尝试获取 post-main 或 main 的内容
+                let content = doc.getElementById('post-main');
+                if (!content) {
+                    content = doc.getElementById('main');
+                }
+                if (!content) {
+                    content = doc.body;
+                }
+                
+                main.innerHTML = content.innerHTML;
 
                 renderPage(main, path)
 
@@ -294,8 +309,27 @@
                     anchorInterceptor(path);
                 });
             }
+            // 检查整站/单页模式，切换按钮显示
+            updateViewModeToggle();
             anchorComponentOnclick();
             loadbackgroundColor();
+        }
+
+        // 更新整站/单页切换按钮显示
+        updateViewModeToggle = function() {
+            var container = document.getElementById('container');
+            var urlParams = new URLSearchParams(window.location.search);
+            var isFullPage = urlParams.get('fullpage') === '1';
+            
+            if (container || isFullPage || window.location.hash) {
+                // 整站模式，显示单页按钮
+                $('.to-fullpage').hide();
+                $('.to-singlepage').show();
+            } else {
+                // 单页模式，显示整站按钮
+                $('.to-fullpage').show();
+                $('.to-singlepage').hide();
+            }
         }
 
         loadbackgroundColor = function() {
@@ -339,7 +373,9 @@
             var pathV = window.location.hash;
             console.log(pathV)
             var hash = window.location.hash.slice(2) || '';
-            if(hash) {
+            // 移除查询参数
+            hash = hash.split('?')[0];
+            if(hash && hash !== '/') {
                 postFetch(hash);
                 expandCategories('/' + hash, 0);
             } else {

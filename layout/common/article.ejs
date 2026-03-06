@@ -59,6 +59,28 @@
                                 <a href='<%= `${repertory_address}/commits/${file_path}` %>'> History </a>
                             </div>
                         <% } %>
+                        <div class="article-meta-button view-mode-toggle" style="float: right;">
+                            <a href="?fullpage=1" class="to-fullpage"><i class="fa fa-th-large"></i> 整站</a>
+                            <a href="<%- url_for(post.path) %>" target="_blank" class="to-singlepage" style="display: none; color: #b8bcc0;"><i class="fa fa-file-o"></i> 单页</a>
+                        </div>
+                        <script>
+                        (function() {
+                            // 检查是否在整站模式（有container或fullpage=1参数）
+                            var container = document.getElementById('container');
+                            var urlParams = new URLSearchParams(window.location.search);
+                            var isFullPage = urlParams.get('fullpage') === '1';
+                            
+                            console.log('container:', container);
+                            console.log('isFullPage:', isFullPage);
+                            console.log('hash:', window.location.hash);
+                            
+                            if (container || isFullPage || window.location.hash) {
+                                // 整站模式，显示单页按钮
+                                document.querySelector('.to-fullpage').style.display = 'none';
+                                document.querySelector('.to-singlepage').style.display = 'inline';
+                            }
+                        })();
+                        </script>
                     </div>
                 <% } %>
                 <%- partial('post/title', { class_name: 'article-title' }) %>

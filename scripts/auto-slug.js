@@ -1,13 +1,11 @@
 /**
- * Auto-generate slug from Chinese title using pinyin abbreviation
+ * Auto-generate slug from title using first letter abbreviation
  * 
- * Strategy: First letter of each pinyin word
+ * Strategy: First letter of each word (Chinese char = 1 word)
  * Example: "如何使用 Hexo" -> "rhsyhexo"
  * 
  * If slug is manually specified in front-matter, it will be preserved.
  */
-
-const pinyin = require('pinyin');
 
 hexo.extend.filter.register('before_post_render', function(data) {
   // Only process posts, not pages
@@ -21,20 +19,25 @@ hexo.extend.filter.register('before_post_render', function(data) {
   }
   
   try {
-    // Convert title to pinyin
-    const py = pinyin(data.title, {
-      style: pinyin.STYLE_NORMAL,  // Normal style without tone marks
-      separator: ' '               // Space separator for splitting
-    });
+    const title = data.title || '';
     
-    // Flatten array and join
-    const pyString = Array.isArray(py) ? py.join(' ') : py;
+    // Split title into words
+    // Chinese characters are treated as individual "words"
+    // English words are split by non-alphanumeric characters
+    const words = title
+      .replace(/([a-zA-Z]+)/g, ' $1 ')  // Separate English words
+      .replace(/\s+/g, ' ')             // Normalize whitespace
+      .trim()
+      .split(' ');
     
     // Get first letter of each word
-    const abbreviation = pyString
-      .split(/\s+/)           // Split by whitespace
-      .map(word => word.charAt(0).toLowerCase())  // Get first letter
-      .join('');              // Join together
+    const abbreviation = words
+      .map(word => {
+        // For Chinese or any character, get the first char
+        const firstChar = word.charAt(0);
+        return firstChar.toLowerCase();
+      })
+      .join('');
     
     // Limit length to 10 characters to keep URL short
     data.slug = abbreviation.substring(0, 10);
@@ -42,8 +45,10 @@ hexo.extend.filter.register('before_post_render', function(data) {
     hexo.log.debug(`Auto-generated slug for "${data.title}": ${data.slug}`);
   } catch (err) {
     hexo.log.warn(`Failed to generate slug for "${data.title}": ${err.message}`);
-    // Fallback: use first 6 chars of title
-    data.slug = data.title.substring(0, 6).toLowerCase().replace(/[^a-z0-9]/g, '');
+    // Fallback: use first 6 alphanumeric chars of title
+    data.slug = data.title
+      ? data.title.substring(0, 6).toLowerCase().replace(/[^a-z0-9]/g, '')
+      : 'post';
   }
   
   return data;

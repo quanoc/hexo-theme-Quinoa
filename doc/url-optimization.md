@@ -209,11 +209,7 @@ slug: hexo-guide    # 手动指定，覆盖自动生成的 rhsyhexo
 
 **插件位置**：`themes/Quinoa/scripts/auto-slug.js`（已内置，无需额外配置）
 
-**依赖**：需要安装 `pinyin` 包（已包含在 package.json 中）
-
-```bash
-npm install pinyin --save
-```
+**实现方式**：直接提取标题中每个字/词的首字母，无需额外依赖
 
 **重新生成**：
 ```bash

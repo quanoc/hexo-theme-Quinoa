@@ -111,7 +111,7 @@ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 cp themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 
 # 5. Install required plugins
-npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink hexo-permalink-pinyin
+npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink hexo-permalink-pinyin pinyin
 ```
 
 ### Enable the Theme
@@ -138,7 +138,7 @@ hexo server
 ```yaml
 # URL Structure (Wiki-style permalinks)
 # Option 1: Short ID (Recommended) - Clean, shareable URLs
-permalink: wiki/:abbrlink/
+permalink: wiki/:abbrlink/:slug/
 
 # Option 2: Short ID + Pinyin (Readable) - Good for Chinese content
 # permalink: wiki/:abbrlink/:pinyin_title/

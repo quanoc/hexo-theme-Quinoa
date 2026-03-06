@@ -32,8 +32,8 @@
 ## ✨ Features
 
 ### 🧭 Dual-Mode Routing System
-- **Full-Site Mode (SPA)**: Hash-based navigation with smooth transitions, sidebar navigation, and full wiki experience
-- **Single-Page Mode (Standalone)**: Clean, shareable pages with `?fullpage=1` parameter - perfect for external linking and embedding
+- **Full-Site Mode (SPA)**: Hash-based navigation with smooth transitions, sidebar navigation, and full wiki experience. Access via `?fullpage=1` parameter
+- **Single-Page Mode (Standalone)**: Clean, shareable pages without parameters - perfect for external linking and embedding
 - **Seamless Toggle**: Switch between modes instantly without losing context
 
 ### 📖 Knowledge-First Design
@@ -75,7 +75,7 @@
 | **Data Ownership** | ✅ Full control (Git-managed) | ⚠️ Hosted on Notion servers |
 | **AI-Friendly** | ✅ Markdown native, static HTML | ⚠️ Proprietary format |
 | **SEO** | ✅ Search engine optimized | ⚠️ Limited SEO capabilities |
-| **Embedding** | ✅ Clean pages via `?fullpage=1` | ⚠️ Branded embeds |
+| **Embedding** | ✅ Clean standalone pages (default) | ⚠️ Branded embeds |
 | **Cost** | ✅ Free (domain + server only) | 💰 Paid for advanced features |
 | **Offline Access** | ✅ Full static files | ⚠️ Requires caching |
 | **Real-time Collab** | ❌ Git workflow | ✅ Multiplayer editing |
@@ -243,8 +243,8 @@ plugins:
 
 | Feature | Description |
 |---------|-------------|
-| **SPA Routing** | Hash-based navigation for seamless browsing without page reloads |
-| **Standalone Mode** | Add `?fullpage=1` to any URL for clean, shareable pages |
+| **SPA Routing** | Hash-based navigation via `?fullpage=1` for seamless browsing without page reloads |
+| **Standalone Mode** | Clean, shareable pages without parameters - perfect for external linking |
 | **Category Tree** | Hierarchical organization with expandable sidebar navigation |
 | **Full-Text Search** | Instant search across all your content |
 
@@ -275,8 +275,8 @@ AI generates content → Markdown files → Git commit → Hexo build → Quinoa
 
 #### 3. **AI Chatbot Integration**
 ```html
-<!-- Embed clean pages in AI chat interfaces -->
-<iframe src="https://your-wiki.com/article/?fullpage=1"></iframe>
+<!-- Embed clean standalone pages in AI chat interfaces -->
+<iframe src="https://your-wiki.com/article/"></iframe>
 ```
 - Single-page mode provides context to AI agents
 - No navigation clutter for AI parsing

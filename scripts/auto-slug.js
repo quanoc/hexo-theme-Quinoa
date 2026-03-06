@@ -1,8 +1,11 @@
 /**
- * Auto-generate slug from title using first letter abbreviation
+ * Auto-generate slug from title
  * 
- * Strategy: First letter of each word (Chinese char = 1 word)
- * Example: "如何使用 Hexo" -> "rhsyhexo"
+ * Strategy: Only generate slug if title contains English words
+ * For pure Chinese titles, leave slug empty for cleaner URLs
+ * 
+ * Example: "如何使用 Hexo" -> slug: "hexo" (extract English words)
+ * Example: "如何使用" -> slug: "" (empty, URL will be /wiki/abbrlink/)
  * 
  * If slug is manually specified in front-matter, it will be preserved.
  */
@@ -18,38 +21,22 @@ hexo.extend.filter.register('before_post_render', function(data) {
     return data;
   }
   
-  try {
-    const title = data.title || '';
-    
-    // Split title into words
-    // Chinese characters are treated as individual "words"
-    // English words are split by non-alphanumeric characters
-    const words = title
-      .replace(/([a-zA-Z]+)/g, ' $1 ')  // Separate English words
-      .replace(/\s+/g, ' ')             // Normalize whitespace
-      .trim()
-      .split(' ');
-    
-    // Get first letter of each word
-    const abbreviation = words
-      .map(word => {
-        // For Chinese or any character, get the first char
-        const firstChar = word.charAt(0);
-        return firstChar.toLowerCase();
-      })
-      .join('');
-    
-    // Limit length to 10 characters to keep URL short
-    data.slug = abbreviation.substring(0, 10);
+  const title = data.title || '';
+  
+  // Extract English words from title
+  const englishWords = title.match(/[a-zA-Z]+/g);
+  
+  if (englishWords && englishWords.length > 0) {
+    // Join English words with hyphen
+    data.slug = englishWords
+      .join('-')
+      .toLowerCase()
+      .substring(0, 20); // Limit length
     
     hexo.log.debug(`Auto-generated slug for "${data.title}": ${data.slug}`);
-  } catch (err) {
-    hexo.log.warn(`Failed to generate slug for "${data.title}": ${err.message}`);
-    // Fallback: use first 6 alphanumeric chars of title
-    data.slug = data.title
-      ? data.title.substring(0, 6).toLowerCase().replace(/[^a-z0-9]/g, '')
-      : 'post';
   }
+  // If no English words, leave slug empty (undefined)
+  // URL will be /wiki/abbrlink/ without slug part
   
   return data;
 });

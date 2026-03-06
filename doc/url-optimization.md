@@ -173,9 +173,9 @@ slug: hexo-guide    # 手动指定精简 slug
 - 重要文章：手动指定英文或精简拼音 slug（覆盖自动生成的）
 - 系列文章：统一前缀，如 `hexo-01`, `hexo-02`...
 
-### 自动生成首字母缩写 slug
+### 自动提取英文 slug
 
-Quinoa 主题内置了自动 slug 生成插件，无需手动添加：
+Quinoa 主题内置了自动 slug 生成插件：
 
 ```yaml
 # _config.yml
@@ -183,41 +183,37 @@ permalink: wiki/:abbrlink/:slug/
 ```
 
 **自动生成规则**：
-- 将中文标题转为拼音
-- 取每个拼音的首字母
-- 限制长度为 10 个字符
+- 从标题中提取英文单词
+- 纯中文标题不生成 slug（URL 更简洁）
+- 限制长度为 20 个字符
 
 **示例**：
 | 标题 | 自动生成的 slug | URL |
 |------|----------------|-----|
-| 如何使用 Hexo 搭建个人博客 | `rhsyhexo` | `/wiki/a3f8b2d/rhsyhexo/` |
-| Python 入门教程 | `pyrmjc` | `/wiki/b2c4d8e/pyrmjc/` |
-| 深度学习基础 | `sdxxjc` | `/wiki/f5a9c1b/sdxxjc/` |
+| 如何使用 Hexo 搭建个人博客 | `hexo` | `/wiki/a3f8b2d/hexo/` |
+| Python 入门教程 | `python` | `/wiki/b2c4d8e/python/` |
+| 深度学习基础 | (空) | `/wiki/f5a9c1b/` |
 
-**覆盖自动生成**：
-如果自动生成的 slug 不满意，可以在 front-matter 中手动指定：
+**手动指定 slug**：
+对于纯中文标题，可以手动指定 slug：
 
 ```markdown
 ---
-title: 如何使用 Hexo 搭建个人博客
-abbrlink: a3f8b2d
-slug: hexo-guide    # 手动指定，覆盖自动生成的 rhsyhexo
+title: 深度学习基础
+abbrlink: f5a9c1b
+slug: deep-learning    # 手动指定
 ---
 ```
 
-**URL 结果**：`/wiki/a3f8b2d/hexo-guide/`（使用手动指定的 slug）
+**URL 结果**：`/wiki/f5a9c1b/deep-learning/`
 
 **插件位置**：`themes/Quinoa/scripts/auto-slug.js`（已内置，无需额外配置）
-
-**实现方式**：直接提取标题中每个字/词的首字母，无需额外依赖
 
 **重新生成**：
 ```bash
 hexo clean
 hexo generate
 ```
-
-生成后可以在文章 front-matter 中看到自动添加的 `slug` 字段。
 
 ### 按年份组织
 

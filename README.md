@@ -1,111 +1,157 @@
-# hexo-theme-Quinoa
+<div align="center">
 
-[中文版文档](./README_zh-CN.md)
+# 📚 hexo-theme-Quinoa
 
-### A personal wiki system based on a Hexo theme. >[Preview](https://waisec.cn/)
+<p align="center">
+  <a href="https://waisec.cn/" target="_blank">
+    <img src="./source/images/SitePreview2.jpg" alt="Quinoa Preview" width="800">
+  </a>
+</p>
 
-some features:
+<p align="center">
+  <a href="./README_zh-CN.md">🇨🇳 中文文档</a> •
+  <a href="https://waisec.cn/">🌐 Live Demo</a> •
+  <a href="#-quick-start">🚀 Quick Start</a> •
+  <a href="#-features">✨ Features</a>
+</p>
 
-- Applicable to personal wiki knowledge management
-- Simple, double column, classified management
-- The knowledge of multi-level sorting, the side can be expand at all levels of classification, easy to jump
-- Supports full-text search
-- Supports Markdown syntax, blog encryption, and music player integration
+<p align="center">
+  <img src="https://img.shields.io/badge/Hexo-3.6+-0e83cd?style=flat-square&logo=hexo" alt="Hexo Version">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/Node-v18+-339933?style=flat-square&logo=nodedotjs" alt="Node Version">
+</p>
 
-![Site Preview](./source/images/SitePreview2.jpg)
+> **A modern, elegant Hexo theme designed for personal knowledge management and documentation.**
+> 
+> Built for thinkers, writers, and knowledge builders who value clarity and seamless navigation.
 
-![mobile preview](./source/images/mobile1.jpg) ![mobile preview](./source/images/mobile0.jpg)
+</div>
 
+---
 
-## Installation
+## ✨ Features
 
-`hexo-theme-Quinoa` kernel code base on [icarus](https://github.com/ppoffice/hexo-theme-icarus), so you can read base function document with [icarus wiki](https://github.com/ppoffice/hexo-theme-icarus/wiki).
+### 🧭 Dual-Mode Routing System
+- **Full-Site Mode (SPA)**: Hash-based navigation with smooth transitions, sidebar navigation, and full wiki experience
+- **Single-Page Mode (Standalone)**: Clean, shareable pages with `?fullpage=1` parameter - perfect for external linking and embedding
+- **Seamless Toggle**: Switch between modes instantly without losing context
 
-### Install
+### 📖 Knowledge-First Design
+- **Hierarchical Categories**: Multi-level category tree in sidebar with expandable/collapsible sections
+- **Full-Text Search**: Lightning-fast client-side search powered by Insight Search
+- **Wiki-Style Navigation**: Designed specifically for interconnected knowledge bases, not just blogs
 
-**Note: This theme requires Hexo v3.6 or late.**
+### 📱 Responsive & Mobile-Optimized
+- **Mobile-First Approach**: Collapsible sidebar, touch-friendly interface
+- **Adaptive Layout**: Optimized reading experience across all devices
+- **Smart Toolbar**: Context-aware actions for mobile users
 
-1. Go to your hexo folder, then clone this theme `Quinoa` into `themes/`
+### 🎨 Modern Aesthetics
+- **Clean Typography**: Optimized for long-form reading
+- **Code Highlighting**: Syntax highlighting with multiple themes
+- **Image Gallery**: Built-in lightbox and justified gallery support
+- **Dark Mode Ready**: Easy to customize color schemes
+
+### 🔧 Developer-Friendly
+- **Version Control Integration**: GitHub/GitLab history tracking per article
+- **Plugin Ecosystem**: MathJax, Mermaid diagrams, music player, encrypted posts
+- **SEO Optimized**: Sitemap, RSS feeds, Open Graph meta tags
+- **Analytics Ready**: Google Analytics, Baidu Analytics, Busuanzi visitor stats
+
+### 🤖 AI-Ready Architecture
+- **Markdown Native**: Perfect for AI content generation and processing
+- **Static Site**: Easy for AI crawlers to index and build knowledge bases
+- **Git Workflow**: AI can participate in content review and version control
+- **Data Sovereignty**: Complete ownership of your knowledge data
+
+---
+
+## 🆚 Quinoa vs Notion
+
+> **Why choose Quinoa over Notion?** Here's the comparison:
+
+| Feature | **Quinoa** | **Notion** |
+|---------|------------|------------|
+| **Data Ownership** | ✅ Full control (Git-managed) | ⚠️ Hosted on Notion servers |
+| **AI-Friendly** | ✅ Markdown native, static HTML | ⚠️ Proprietary format |
+| **SEO** | ✅ Search engine optimized | ⚠️ Limited SEO capabilities |
+| **Embedding** | ✅ Clean pages via `?fullpage=1` | ⚠️ Branded embeds |
+| **Cost** | ✅ Free (domain + server only) | 💰 Paid for advanced features |
+| **Offline Access** | ✅ Full static files | ⚠️ Requires caching |
+| **Real-time Collab** | ❌ Git workflow | ✅ Multiplayer editing |
+| **Database** | ❌ File-based | ✅ Built-in databases |
+
+**Choose Quinoa when:** You want full data control, AI-ready content, SEO optimization, and the ability to embed clean pages anywhere.
+
+**Choose Notion when:** You need real-time collaboration and built-in databases.
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Hexo**: v3.6 or higher
+- **Node.js**: v18+ recommended
+- **npm**: v10+ recommended
+
+### Installation
 
 ```bash
-$ cd your-hexo-directory
-$ git clone https://github.com/quanoc/hexo-theme-Quinoa.git themes/Quinoa
+# 1. Navigate to your Hexo site directory
+cd your-hexo-site
+
+# 2. Clone the theme
+git clone https://github.com/quanoc/hexo-theme-Quinoa.git themes/Quinoa
+
+# 3. Copy required template files
+cp -rf themes/Quinoa/_source/* source/
+cp -rf themes/Quinoa/_scaffolds/* scaffolds/
+
+# 4. Create theme configuration
+cp themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
+
+# 5. Install required plugins
+npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
 ```
 
-2. Rewrite to cover some default page template in site folder
+### Enable the Theme
 
-```bash
-$ cp -rf themes/Quinoa/_source/* source/
-$ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
-```
-
-3. Rename the `_config.yml.example` to `_config.yml` so you can config theme
-
-```bash
-$ cp -f themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
-# edit and customize it
-$ vim themes/Quinoa/_config.yml
-```
-
-most configurations are same as the [icarus](https://github.com/ppoffice/hexo-theme-icarus) theme, you can read with [icarus wiki](https://github.com/ppoffice/hexo-theme-icarus/wiki) at first.
-
-some recommend options setting which you can out of the box, see below [#Configuration](#Configuration).
-
-4. Plugins requires in theme [`package.json`](./package.json) and you need install these.
-
-here is those function and effect:
-
-```json
-hexo-autonofollow       // automatic make user open external links in new tab
-hexo-directory-category // automatic categorize article according to their file directory
-hexo-generator-feed     // generate Atom 1.0 or RSS 2.0 feed
-hexo-generator-json-content // generate a json content file for site search
-hexo-generator-sitemap  // generate sitemap
-```
-
-you can merge these plugins into the **site's** `package.json` file by `npm install ` command install them once,
-
-or in the **site folder**, you can install them with the following command:
-
-```bash
-$ npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
-```
-
-### Enable
-
-Modify `theme` setting in site config file `_config.yml` to **`Wikitten`**.
-
-### Update
-
-```bash
-$ cd themes/Quinoa
-$ git pull origin master
-```
-
-## Configuration
-
-In site config file `_config.yml`, **recommend settings**:
+Edit your site's `_config.yml`:
 
 ```yaml
-# Hexo Configuration
-# URL
+theme: Quinoa
+```
+
+### Start Writing
+
+```bash
+hexo new "My Knowledge Article"
+hexo server
+```
+
+---
+
+## ⚙️ Configuration
+
+### Site Configuration (`_config.yml`)
+
+```yaml
+# URL Structure (Wiki-style permalinks)
 permalink: wiki/:title/
 
-# Directory
+# Skip rendering for special files
 skip_render:
   - README.md
   - '_posts/**/embed_page/**'
 
-# Writing
-new_post_name: :title.md # File name of new posts
+# Writing settings
+new_post_name: :title.md
 
-## Markdown
-## https://github.com/hexojs/hexo-renderer-marked
+# Markdown rendering
 marked:
   gfm: true
-  
-## Plugins: https://hexo.io/plugins/
-### JsonContent
+
+# Search configuration
 jsonContent:
   meta: false
   pages:
@@ -122,58 +168,161 @@ jsonContent:
     categories: true
   ignore:
     - 404.html
-    
-### Creat sitemap
+
+# SEO
 sitemap:
   path: sitemap.xml
 
-### Adds nofollow attribute to all external links in your hexo blog posts automatically.
 nofollow:
   enable: true
   exclude:
-    - <your site url domain> # eg: zthxxx.me
+    - your-domain.com
 ```
 
-In **theme** config file `Quinoa/_config.yml`, you can read more detailed commentary for some options.
+### Theme Configuration (`themes/Quinoa/_config.yml`)
 
-**Before the start, plase first change my personal info to yourself, including options that `profile` `social_links` `history_control` and so on.**
-
-### `profile`, `comment`, `Share` and `miscellaneous` are **DEFAULT DISABLE**! 
-
-(You still can enable them, but not recommend.)
-
-other theme **recommend settings**:
+> ⚠️ **Important**: Replace personal information with your own!
 
 ```yaml
-# Customize
-customize: # modify this information for yourself
-    sidebar: left # sidebar position, options: left, right
-    category_perExpand: false # enable article categories list per expanding
-    default_index_file: index.md # enable this, it will display at site index instead of default index page, or disable that it will display more articles order by time 
+# Customize your site identity
+customize:
+    sidebar: left              # Sidebar position: left | right
+    category_perExpand: false  # Auto-expand categories
+    default_index_file: index.md  # Use specific page as homepage
     
-# Widgets
-widgets: # default use category only
+    # Social links
+    social_links:
+        github: https://github.com/yourname
+        rss: /atom.xml
+
+# Widgets (sidebar components)
+widgets:
     - category
     # - recent_posts
     # - archive
     # - tag
     # - tagcloud
     # - links
-    
-# History version 
-history_control: # make you wiki has history version control in page (view source code, edit online, compare historical changes)
+
+# Git version control integration
+history_control:
     enable: true
-    server_link: https://github.com # recommend use GitHub - https://github.com
-    user: <your GitHub name>
-    repertory: <your repertory name of this wiki source code>
-    branch: <branch name of this wiki site source code>
+    server_link: https://github.com
+    user: <your-github-username>
+    repertory: <your-repo-name>
+    branch: master
+
+# Search
+search:
+    insight: true    # Requires hexo-generator-json-content
+    
+# Analytics
+plugins:
+    busuanzi_count: true    # Visitor statistics
+    google_analytics:       # GA tracking ID
+    baidu_analytics:        # Baidu tracking ID
 ```
 
+---
 
+## 🖼️ Screenshots
 
-## License
+<div align="center">
 
-[MIT LICENSE](./LICENSE)
+| Desktop View | Mobile View |
+|:------------:|:-----------:|
+| ![Desktop](./source/images/SitePreview2.jpg) | ![Mobile](./source/images/mobile1.jpg) |
 
+</div>
 
+---
 
+## 📚 Documentation
+
+### Core Concepts
+
+| Feature | Description |
+|---------|-------------|
+| **SPA Routing** | Hash-based navigation for seamless browsing without page reloads |
+| **Standalone Mode** | Add `?fullpage=1` to any URL for clean, shareable pages |
+| **Category Tree** | Hierarchical organization with expandable sidebar navigation |
+| **Full-Text Search** | Instant search across all your content |
+
+### Writing Tips
+
+1. **Organize with Categories**: Use directory structure for automatic categorization
+2. **Link Freely**: Internal links work seamlessly in both SPA and standalone modes
+3. **Embed Media**: Support for images, videos, code blocks, and interactive diagrams
+4. **Version Control**: Enable `history_control` to track changes via Git
+
+### 🤖 AI Agent Use Cases
+
+Quinoa's architecture is perfectly suited for AI-powered workflows:
+
+#### 1. **AI Knowledge Base Builder**
+```bash
+# Workflow: AI-Assisted Documentation
+AI generates content → Markdown files → Git commit → Hexo build → Quinoa deploy
+```
+- Use ChatGPT/Claude to generate technical docs
+- Store in Git for version control
+- Auto-deploy via CI/CD pipeline
+
+#### 2. **RAG (Retrieval-Augmented Generation) Source**
+- Static HTML pages are easily crawled by AI
+- Build vector databases from your Quinoa site
+- Use as knowledge source for AI assistants
+
+#### 3. **AI Chatbot Integration**
+```html
+<!-- Embed clean pages in AI chat interfaces -->
+<iframe src="https://your-wiki.com/article/?fullpage=1"></iframe>
+```
+- Single-page mode provides context to AI agents
+- No navigation clutter for AI parsing
+
+#### 4. **Automated Content Pipeline**
+```yaml
+# Example: GitHub Actions + AI
+1. AI monitors code changes
+2. Auto-generates documentation
+3. Creates pull request
+4. Merges → Auto-deploys to Quinoa site
+```
+
+#### 5. **Personal AI Second Brain**
+- Write notes in Markdown (AI-friendly)
+- Organize hierarchically with categories
+- Full-text search enables quick retrieval
+- Git history tracks idea evolution
+
+---
+
+## 🔄 Updates
+
+```bash
+cd themes/Quinoa
+git pull origin master
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+<div align="center">
+
+**Made with ❤️ for knowledge builders**
+
+[⬆ Back to Top](#-hexo-theme-quinoa)
+
+</div>

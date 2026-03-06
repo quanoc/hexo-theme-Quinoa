@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "hexo": "^6.3.0",
+    "hexo-abbrlink": "^2.2.1",
     "hexo-autonofollow": "^1.0.1",
     "hexo-directory-category": "^1.0.5",
     "hexo-generator-archive": "^1.0.0",

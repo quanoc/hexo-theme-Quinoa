@@ -111,7 +111,7 @@ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 cp themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 
 # 5. 安装所需插件
-npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap
+npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink
 ```
 
 ### 启用主题
@@ -137,7 +137,11 @@ hexo server
 
 ```yaml
 # URL 结构 (Wiki 风格永久链接)
-permalink: wiki/:title/
+# 选项 1：短链接 (推荐) - 简洁、易分享的 URL
+permalink: wiki/:abbrlink/
+
+# 选项 2：基于标题 (原始) - 可能包含中文字符
+# permalink: wiki/:title/"
 
 # 跳过渲染特殊文件
 skip_render:
@@ -177,6 +181,12 @@ nofollow:
   enable: true
   exclude:
     - your-domain.com
+
+# 短链接配置 (需要 hexo-abbrlink)
+abbrlink:
+  alg: crc32      # 算法: crc16 (默认) 或 crc32
+  rep: hex        # 格式: hex (默认) 或 dec
+  drafts: false   # 是否处理草稿
 ```
 
 ### 主题配置 (`themes/Quinoa/_config.yml`)

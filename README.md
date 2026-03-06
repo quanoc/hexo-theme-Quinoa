@@ -140,7 +140,10 @@ hexo server
 # Option 1: Short ID (Recommended) - Clean, shareable URLs
 permalink: wiki/:abbrlink/
 
-# Option 2: Title-based (Original) - May contain Chinese characters
+# Option 2: Short ID + Pinyin (Readable) - Good for Chinese content
+# permalink: wiki/:abbrlink/:pinyin_title/
+
+# Option 3: Title-based (Original) - May contain Chinese characters
 # permalink: wiki/:title/
 
 # Skip rendering for special files
@@ -187,6 +190,19 @@ abbrlink:
   alg: crc32      # Algorithm: crc16 (default) or crc32
   rep: hex        # Format: hex (default) or dec
   drafts: false   # Process draft posts
+
+# Pinyin URL Configuration (requires hexo-permalink-pinyin)
+# Auto-generates readable pinyin slugs for Chinese titles
+permalink_pinyin:
+  enable: true
+  separator: '-'     # Separator between pinyin words
+  lowercase: true    # Convert to lowercase
+  transform: title   # Transform title to pinyin
+  # Note: For abbreviated pinyin (e.g., rhsy-hexo), manually specify slug in front-matter:
+  # ---
+  # title: 如何使用 Hexo
+  # slug: rhsy-hexo
+  # ---
 ```
 
 ### Theme Configuration (`themes/Quinoa/_config.yml`)

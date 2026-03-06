@@ -140,7 +140,10 @@ hexo server
 # 选项 1：短链接 (推荐) - 简洁、易分享的 URL
 permalink: wiki/:abbrlink/
 
-# 选项 2：基于标题 (原始) - 可能包含中文字符
+# 选项 2：短链接 + 拼音 (可读) - 适合中文内容
+# permalink: wiki/:abbrlink/:pinyin_title/
+
+# 选项 3：基于标题 (原始) - 可能包含中文字符
 # permalink: wiki/:title/"
 
 # 跳过渲染特殊文件
@@ -187,6 +190,19 @@ abbrlink:
   alg: crc32      # 算法: crc16 (默认) 或 crc32
   rep: hex        # 格式: hex (默认) 或 dec
   drafts: false   # 是否处理草稿
+
+# 拼音 URL 配置 (需要 hexo-permalink-pinyin)
+# 自动为中文标题生成拼音 slug
+permalink_pinyin:
+  enable: true
+  separator: '-'     # 拼音词之间的分隔符
+  lowercase: true    # 转为小写
+  transform: title   # 转换标题为拼音
+  # 提示：如需精简拼音（如 rhsy-hexo），可在 front-matter 手动指定 slug：
+  # ---
+  # title: 如何使用 Hexo
+  # slug: rhsy-hexo
+  # ---
 ```
 
 ### 主题配置 (`themes/Quinoa/_config.yml`)

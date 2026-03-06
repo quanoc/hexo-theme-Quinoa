@@ -10,6 +10,8 @@
  * If slug is manually specified in front-matter, it will be preserved.
  */
 
+// Register with priority 5 (lower number = earlier execution)
+// hexo-abbrlink uses default priority (10), so this runs first
 hexo.extend.filter.register('before_post_render', function(data) {
   // Only process posts, not pages
   if (data.layout !== 'post') {
@@ -39,4 +41,4 @@ hexo.extend.filter.register('before_post_render', function(data) {
   // URL will be /wiki/abbrlink/ without slug part
   
   return data;
-});
+}, 5);  // Priority 5

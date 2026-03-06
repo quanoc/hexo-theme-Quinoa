@@ -111,7 +111,7 @@ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 cp themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 
 # 5. Install required plugins
-npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink
+npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink hexo-permalink-pinyin
 ```
 
 ### Enable the Theme

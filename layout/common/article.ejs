@@ -3,7 +3,7 @@
 <meta property="og:image" content="/logo.png" />
 <meta property="og:url" content="<%= post.permalink %>" />
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="Nova`Wiki">
+<meta property="og:site_name" content="Novus`Wiki">
 <% if (theme.plugins.mathjax && post.mathjax && !index) { %>
     <!-- <%- partial('plugin/mathjax') %> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
@@ -21,7 +21,7 @@
 <!-- mermaid config -->
 <!-- <% if (theme.plugins.mermaid && post.mermaid && !index) { %> -->
 <!-- <% } %> -->
-<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemtype="https://schema.org/BlogPosting">
     <% if (post.referrer) { %>
         <meta name="referrer" content="no-referrer" />
     <% } %>
@@ -42,6 +42,15 @@
                         <%- partial('post/category') %>
                         <%- partial('post/tag') %>
                         <%- partial('post/date', { class_name: 'article-date', date_format: null }) %>
+                        <meta itemprop="datePublished" content="<%= post.date.toISOString() %>">
+                        <% if (post.updated) { %>
+                        <meta itemprop="dateModified" content="<%= post.updated.toISOString() %>">
+                        <% } else { %>
+                        <meta itemprop="dateModified" content="<%= post.date.toISOString() %>">
+                        <% } %>
+                        <% if (post.tags && post.tags.length) { %>
+                        <meta itemprop="keywords" content="<%= post.tags.toArray().map(tag => tag.name).join(',') %>">
+                        <% } %>
                         <% if (theme.plugins.busuanzi_count) { %>
                             <i class="fa fa-bar-chart"></i>
                             <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
@@ -80,10 +89,43 @@
                     </div>
                 <% } %>
                 <%- partial('post/title', { class_name: 'article-title' }) %>
+                <% if (!index && theme.customize && theme.customize.profile && theme.customize.profile.author) { %>
+                <div itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <meta itemprop="name" content="<%= theme.customize.profile.author %>">
+                    <% if (theme.customize.profile.follow) { %>
+                    <meta itemprop="url" content="<%= theme.customize.profile.follow %>">
+                    <% } %>
+                    <% if (theme.customize.profile.avatar) { %>
+                    <meta itemprop="image" content="<%= config.url %><%- url_for(theme.customize.profile.avatar) %>">
+                    <% } else if (theme.customize.profile.gravatar) { %>
+                    <meta itemprop="image" content="<%= gravatar(theme.customize.profile.gravatar, 128) %>">
+                    <% } %>
+                </div>
+                <% } %>
+                <% if (post.photos && post.photos.length) { %>
+                <meta itemprop="image" content="<%= post.photos[0] %>">
+                <% } else if (post.banner) { %>
+                <meta itemprop="image" content="<%= post.banner %>">
+                <% } else { %>
+                <meta itemprop="image" content="<%= config.url %>/logo.png">
+                <% } %>
+                <meta itemprop="url" content="<%= post.permalink %>">
+                <meta itemprop="mainEntityOfPage" content="<%= post.permalink %>">
+                <% if (config.description) { %>
+                <meta itemprop="description" content="<%= post.description || post.excerpt || config.description %>">
+                <% } %>
+                <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+                    <meta itemprop="name" content="<%= config.title %>">
+                    <% if (theme.customize && theme.customize.favicon) { %>
+                    <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                        <meta itemprop="url" content="<%= config.url %><%- url_for(theme.customize.favicon) %>">
+                    </div>
+                    <% } %>
+                </div>
             </header>
         <% } %>
         <%- partial('post/gallery') %>
-        <div class="article-entry page-indent" itemprop="articleBody">
+        <div class="article-entry page-indent" itemprop="articleBody text">
         <% var show_all_content = true %>
         <% if (index) { %>
             <% if (post.excerpt || post.description) { %>

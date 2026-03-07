@@ -7,9 +7,10 @@
     "hexo",
     "theme",
     "wiki",
-    "personal",
-    "nova",
-    "quartz"
+    "知识库",
+    "novus",
+    "Quinoa",
+    "Agent"
   ],
   "license": "MIT",
   "hexo": {
@@ -18,8 +19,6 @@
   "dependencies": {
     "hexo": "^6.3.0",
     "hexo-abbrlink": "^2.2.1",
-    "hexo-permalink-pinyin": "^1.1.0",
-    "pinyin": "^2.11.2",
     "hexo-autonofollow": "^1.0.1",
     "hexo-directory-category": "^1.0.5",
     "hexo-generator-archive": "^1.0.0",

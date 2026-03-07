@@ -15,7 +15,7 @@ customize:
         url: /logo.png
     profile:
         enabled: false # Whether to show profile bar
-        avatar: # css/images/avatar.png
+        avatar: /logo.png # css/images/avatar.png
         gravatar:  # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
         author: quano
         author_title: Designer & Programmer

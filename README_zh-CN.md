@@ -140,10 +140,7 @@ hexo server
 # 选项 1：短链接 (推荐) - 简洁、易分享的 URL
 permalink: wiki/:abbrlink/
 
-# 选项 2：短链接 + 拼音 (可读) - 适合中文内容
-# permalink: wiki/:abbrlink/:pinyin_title/
-
-# 选项 3：基于标题 (原始) - 可能包含中文字符
+# 选项 2：基于标题 (原始) - 可能包含中文字符
 # permalink: wiki/:title/"
 
 # 跳过渲染特殊文件

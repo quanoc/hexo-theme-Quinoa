@@ -138,12 +138,9 @@ hexo server
 ```yaml
 # URL Structure (Wiki-style permalinks)
 # Option 1: Short ID (Recommended) - Clean, shareable URLs
-permalink: wiki/:abbrlink/:slug/
+permalink: wiki/:abbrlink/
 
-# Option 2: Short ID + Pinyin (Readable) - Good for Chinese content
-# permalink: wiki/:abbrlink/:pinyin_title/
-
-# Option 3: Title-based (Original) - May contain Chinese characters
+# Option 2: Title-based (Original) - May contain Chinese characters
 # permalink: wiki/:title/
 
 # Skip rendering for special files

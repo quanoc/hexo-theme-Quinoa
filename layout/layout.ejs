@@ -3,47 +3,8 @@
 <html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <head>
     <meta charset="utf-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML"></script>
-    <script>
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['$', '$'], ['\$', '\$']]
-            },
-            jax: ["input/TeX", "output/HTML-CSS"],
-            "HTML-CSS": {
-                webFont: "none",
-                availableFonts: ["Asana Math", "STIX", "Latin Modern", ],
-                preferredFont: "Asana Math",
-                imageFont: "TeX"
-            },
-            "SVG": {
-                font: "STIX-Web",
-                blacker: 0.01,
-                linebreaks: { automatic: true }
-            },
-            showProcessingMessages: false,
-            messageStyle: "none",
-            showMathMenu: false,
-            menuSettings: { zoom: "Double-Click" }
-        });
-    </script>
-<%
-    function capitalize (str) { return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase() }
-    var title = page.title;
-    if (is_archive()) {
-        title = capitalize(__('index.archive'));
-        if (is_month()) {
-            title += ': ' + page.year + '/' + page.month;
-        } else if (is_year()) {
-            title += ': ' + page.year;
-        }
-    } else if (is_category()) {
-        title = capitalize(__('index.category')) + ': ' + page.category;
-    } else if (is_tag()) {
-        title = capitalize(__('index.tag')) + ': ' + page.tag;
-    }
-%>
-    <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+    <title><%= page.title ? page.title + ' | ' + config.title : config.title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <% 
     var keywords_content = undefined;
     if (page.keywords) { 
@@ -61,27 +22,22 @@
 <% if (keywords_content) { %>
     <meta name="keywords" content="<%= keywords_content %>" />
 <% } %>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<% if (page.description || config.description) { %>
+    <meta name="description" content="<%= page.description || config.description %>" />
+<% } %>
     <%- open_graph({
-        image:          thumbnail(page),
-        fb_app_id:      theme.miscellaneous.open_graph.fb_app_id,
-        fb_admins:      theme.miscellaneous.open_graph.fb_admins,
-        twitter_id:     theme.miscellaneous.open_graph.twitter_id,
-        google_plus:    theme.miscellaneous.open_graph.google_plus,
+        title: page.title || config.title,
+        type: 'article',
+        image: thumbnail(page),
+        url: url,
+        description: page.description || config.description,
+        site_name: config.title
     }) %>
-    <%- meta(page) %>
-
-    <% if (theme.customize && theme.customize.social_links && theme.customize.social_links.rss) { %>
-        <link rel="alternate" href="<%- theme.customize.social_links.rss %>" title="<%= config.title %>" type="application/atom+xml" />
-    <% } %>
-
-    <% if (theme.customize.favicon) { %>
-        <link rel="icon" href="<%- url_for(theme.customize.favicon) %>" />
-    <% } %>
-
+    <style>
+    body { margin: 0; padding: 20px; }
+    #post-main { max-width: 1000px; margin: 0 auto; }
+    </style>
     <%- css('libs/font-awesome/css/font-awesome.min') %>
-    <%- css('libs/open-sans/styles') %>
-    <%- css('libs/source-code-pro/styles') %>
     <%- css('css/style') %>
     <%- js('libs/jquery/2.1.3/jquery.min') %>
     <%- js('libs/jquery/plugins/cookie/1.4.1/jquery.cookie') %>
@@ -97,10 +53,6 @@
     <% if (theme.plugins.busuanzi_count) { %>
         <script async src="<%- url_for('libs/busuanzi/2.3/busuanzi.pure.mini.js') %>"></script>
     <% } %>
-    <style>
-    body { margin: 0; padding: 20px; }
-    #post-main { max-width: 1000px; margin: 0 auto; }
-    </style>
 </head>
 <body>
     <section id="post-main"><%- body %></section>

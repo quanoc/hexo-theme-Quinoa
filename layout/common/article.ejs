@@ -70,10 +70,6 @@
                             var urlParams = new URLSearchParams(window.location.search);
                             var isFullPage = urlParams.get('fullpage') === '1';
                             
-                            console.log('container:', container);
-                            console.log('isFullPage:', isFullPage);
-                            console.log('hash:', window.location.hash);
-                            
                             if (container || isFullPage || window.location.hash) {
                                 // 整站模式，显示单页按钮
                                 document.querySelector('.to-fullpage').style.display = 'none';

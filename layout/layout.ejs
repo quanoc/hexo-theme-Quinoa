@@ -22,16 +22,14 @@
 <% if (keywords_content) { %>
     <meta name="keywords" content="<%= keywords_content %>" />
 <% } %>
-<% if (page.description || config.description) { %>
-    <meta name="description" content="<%= page.description || config.description %>" />
-<% } %>
     <%- open_graph({
         title: page.title || config.title,
         type: 'article',
         image: thumbnail(page),
         url: url,
         description: page.description || config.description,
-        site_name: config.title
+        site_name: config.title,
+        language: config.language
     }) %>
     <style>
     body { margin: 0; padding: 20px; }

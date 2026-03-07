@@ -222,7 +222,74 @@
         }
     }
 
-    $.getJSON(CONFIG.CONTENT_URL, function (json) {
+    // 动态加载 pako.js
+    function loadPako(callback) {
+        if (window.pako) {
+            callback();
+            return;
+        }
+        var script = document.createElement('script');
+        script.src = '/libs/pako/pako.min.js';
+        script.async = true;
+        script.onload = callback;
+        script.onerror = function() {
+            console.error('[insight] Failed to load pako.js');
+        };
+        document.head.appendChild(script);
+    }
+    
+    // 尝试加载压缩版本，失败则加载普通版本
+    function loadSearchData() {
+        // 首先尝试加载压缩版本
+        var gzUrl = CONFIG.CONTENT_URL + '.gz';
+        
+        // 使用原生 XMLHttpRequest 来正确获取二进制数据
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', gzUrl, true);
+        xhr.responseType = 'arraybuffer';
+        
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // 成功获取压缩数据，需要解压
+                loadPako(function() {
+                    try {
+                        var uint8Array = new Uint8Array(xhr.response);
+                        var inflated = window.pako.inflate(uint8Array, { to: 'string' });
+                        var json = JSON.parse(inflated);
+                        initSearch(json);
+                        console.log('[insight] Loaded compressed data');
+                    } catch (e) {
+                        console.error('[insight] Failed to decompress:', e);
+                        // 解压失败，回退到普通版本
+                        loadNormalData();
+                    }
+                });
+            } else {
+                // 压缩版本不存在，加载普通版本
+                loadNormalData();
+            }
+        };
+        
+        xhr.onerror = function() {
+            // 加载失败，回退到普通版本
+            loadNormalData();
+        };
+        
+        xhr.send();
+    }
+    
+    // 加载普通版本
+    function loadNormalData() {
+        $.getJSON(CONFIG.CONTENT_URL, function (json) {
+            initSearch(json);
+            console.log('[insight] Loaded normal data');
+        }).fail(function() {
+            console.error('[insight] Failed to load search data');
+        });
+    }
+    
+    // 初始化搜索
+    function initSearch(json) {
         if (location.hash.trim() === '#ins-search') {
             $main.addClass('show');
         }
@@ -230,8 +297,22 @@
             var keywords = $(this).val();
             searchResultToDOM(keywords, search(json, keywords));
         });
+        // 触发一次搜索（显示所有结果或空结果）
         $input.trigger('input');
-    });
+    }
+    
+    // 标记是否已经加载过数据
+    var searchDataLoaded = false;
+    
+    // 延迟加载搜索数据（在搜索框打开时调用）
+    function ensureSearchDataLoaded() {
+        if (searchDataLoaded) return;
+        searchDataLoaded = true;
+        loadSearchData();
+    }
+    
+    // 暴露给全局，让外部可以调用
+    window.INSIGHT_LOAD_DATA = ensureSearchDataLoaded;
 
 
     $(document).on('click focus', '.search-form-input', function () {

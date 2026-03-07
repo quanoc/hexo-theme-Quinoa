@@ -1,35 +1,85 @@
 (function($){
     var toTop = ($('#sidebar').height() - $(window).height()) + 60;
-    // Caption
-    $('.article-entry').each(function(i) {
-        $(this).find('img').each(function() {
-            if (this.alt && !(!!$.prototype.justifiedGallery && $(this).parent('.justified-gallery').length)) {
-                $(this).after('<span class="caption">' + this.alt + '</span>');
-            }
-
-            // 对于已经包含在链接内的图片不适用lightGallery
-            if ($(this).parent().prop("tagName") !== 'A') {
-                $(this).wrap('<a href="' + this.src + '" title="' + this.alt + '" class="gallery-item"></a>');
+    
+    // 动态加载 lightgallery CSS
+    function loadLightGalleryCSS() {
+        if (document.getElementById('lightgallery-css')) return;
+        var link = document.createElement('link');
+        link.id = 'lightgallery-css';
+        link.rel = 'stylesheet';
+        link.href = '/libs/lightgallery/css/lightgallery.min.css';
+        document.head.appendChild(link);
+    }
+    
+    // 动态加载 lightgallery JS
+    function loadLightGalleryJS(callback) {
+        if (window.lightGallery) {
+            callback();
+            return;
+        }
+        
+        var scripts = [
+            '/libs/lightgallery/js/lightgallery.min.js',
+            '/libs/lightgallery/js/lg-thumbnail.min.js',
+            '/libs/lightgallery/js/lg-pager.min.js',
+            '/libs/lightgallery/js/lg-autoplay.min.js',
+            '/libs/lightgallery/js/lg-fullscreen.min.js',
+            '/libs/lightgallery/js/lg-zoom.min.js'
+        ];
+        
+        var loaded = 0;
+        scripts.forEach(function(src) {
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = false; // 按顺序加载
+            script.onload = function() {
+                loaded++;
+                if (loaded === scripts.length && callback) {
+                    callback();
+                }
+            };
+            document.head.appendChild(script);
+        });
+    }
+    
+    // 初始化 lightgallery
+    function initLightGallery() {
+        var $articleEntry = $('.article-entry');
+        var $articleGallery = $('.article-gallery');
+        
+        // 检查是否有图片需要画廊功能
+        var hasImages = $articleEntry.find('img').length > 0 || $articleGallery.length > 0;
+        
+        if (!hasImages) return;
+        
+        // 为图片添加画廊链接
+        $articleEntry.each(function(i) {
+            $(this).find('img').each(function() {
+                if (this.alt && !(!!$.prototype.justifiedGallery && $(this).parent('.justified-gallery').length)) {
+                    $(this).after('<span class="caption">' + this.alt + '</span>');
+                }
+                // 对于已经包含在链接内的图片不适用lightGallery
+                if ($(this).parent().prop("tagName") !== 'A') {
+                    $(this).wrap('<a href="' + this.src + '" title="' + this.alt + '" class="gallery-item"></a>');
+                }
+            });
+        });
+        
+        // 动态加载并初始化
+        loadLightGalleryCSS();
+        loadLightGalleryJS(function() {
+            var options = { selector: '.gallery-item' };
+            $articleEntry.each(function(i, entry) {
+                lightGallery(entry, options);
+            });
+            if ($articleGallery.length) {
+                lightGallery($articleGallery[0], options);
             }
         });
-    });
-    if (lightGallery) {
-        var options = {
-            selector: '.gallery-item',
-        };
-        $('.article-entry').each(function(i, entry) {
-            lightGallery(entry, options);
-        });
-        lightGallery($('.article-gallery')[0], options);
     }
-    if (!!$.prototype.justifiedGallery) {  // if justifiedGallery method is defined
-        var options = {
-            rowHeight: 140,
-            margins: 4,
-            lastRow: 'justify'
-        };
-        $('.justified-gallery').justifiedGallery(options);
-    }
+    
+    // 页面加载时初始化
+    initLightGallery();
 
     // Profile card
     $(document).on('click', function () {

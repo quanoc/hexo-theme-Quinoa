@@ -26,4 +26,65 @@
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
-<%- js('js/insight') %>
+<script>
+// 懒加载 insight.js，点击搜索时才加载
+(function() {
+    var insightLoaded = false;
+    var insightLoading = false;
+    
+    function loadInsightJS(callback) {
+        if (insightLoaded) {
+            if (callback) callback();
+            return;
+        }
+        if (insightLoading) return;
+        insightLoading = true;
+        
+        var script = document.createElement('script');
+        script.src = '<%- url_for("js/insight.js") %>';
+        script.async = true;
+        script.onload = function() {
+            insightLoaded = true;
+            insightLoading = false;
+            console.log('[insight] JS loaded');
+            if (callback) callback();
+        };
+        script.onerror = function() {
+            insightLoading = false;
+            console.error('[insight] Failed to load JS');
+        };
+        document.head.appendChild(script);
+    }
+    
+    // 加载数据（在 insight.js 加载后调用）
+    function loadSearchData() {
+        if (window.INSIGHT_LOAD_DATA) {
+            window.INSIGHT_LOAD_DATA();
+        } else {
+            // 如果函数还没准备好，稍后再试
+            setTimeout(loadSearchData, 100);
+        }
+    }
+    
+    // 点击搜索输入框时加载 JS 和数据
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('ins-search-input') || 
+            e.target.classList.contains('search-form-input')) {
+            loadInsightJS(loadSearchData);
+        }
+    });
+    
+    // 聚焦搜索输入框时加载 JS 和数据
+    document.addEventListener('focusin', function(e) {
+        if (e.target.classList.contains('ins-search-input') || 
+            e.target.classList.contains('search-form-input')) {
+            loadInsightJS(loadSearchData);
+        }
+    });
+    
+    // 如果 URL 包含 #ins-search，自动加载
+    if (location.hash === '#ins-search') {
+        loadInsightJS(loadSearchData);
+    }
+})();
+</script>

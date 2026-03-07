@@ -1,4 +1,4 @@
-<% if (['post', 'page', 'tags', 'categories'].includes(page.layout)) { %>
+<% if (['post', 'page', 'tags', 'categories'].includes(page.layout) || page.__index) { %>
 <!DOCTYPE html>
 <html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <head>

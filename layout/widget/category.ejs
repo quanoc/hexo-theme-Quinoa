@@ -242,10 +242,17 @@
                     document.body.appendChild(newScript);
                 });
 
-                // 手动触发 MathJax 渲染（2.x 版本）
-                if (window.MathJax) {
-                   MathJax.Hub.Queue(["Typeset", MathJax.Hub, main]);
+                // 检测并懒加载 MathJax（如果文章包含数学公式）
+                if (main.innerHTML.match(/\$\$?[\s\S]*?\$\$?/) || main.querySelector('.math')) {
+                    if (window.MathJax) {
+                        // MathJax 已加载，直接渲染
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub, main]);
+                    } else {
+                        // 动态加载 MathJax
+                        loadMathJax(main);
+                    }
                 }
+                
                 if (window.mermaid) {
                     mermaid.init(undefined, document.querySelectorAll('.mermaid'));
                 }
@@ -292,6 +299,45 @@
             };
             // 5. 把 script 标签塞到 head（或 body 末尾都行）
             document.head.appendChild(newScript);
+        }
+
+        // 动态加载 MathJax
+        loadMathJax = function(container) {
+            // 配置 MathJax
+            window.MathJax = {
+                tex2jax: {
+                    inlineMath: [['$', '$'], ['\\$', '\\$']],
+                    displayMath: [['$$', '$$']]
+                },
+                jax: ["input/TeX", "output/HTML-CSS"],
+                "HTML-CSS": {
+                    webFont: "none",
+                    availableFonts: ["Asana Math", "STIX", "Latin Modern"],
+                    preferredFont: "Asana Math",
+                    imageFont: "TeX"
+                },
+                "SVG": {
+                    font: "STIX-Web",
+                    blacker: 0.01,
+                    linebreaks: { automatic: true }
+                },
+                showProcessingMessages: false,
+                messageStyle: "none",
+                showMathMenu: false,
+                menuSettings: { zoom: "Double-Click" }
+            };
+            
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML';
+            script.async = true;
+            script.onload = function() {
+                // 加载完成后渲染当前容器的公式
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+            };
+            script.onerror = function() {
+                console.error('MathJax 加载失败');
+            };
+            document.head.appendChild(script);
         }
 
         // 监听(categories、tags等)点击事件，做链接的拦截处理

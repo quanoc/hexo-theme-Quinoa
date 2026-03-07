@@ -91,6 +91,7 @@ miscellaneous:
         fb_admins:
         twitter_id:
         google_plus:
+        locale: zh_CN # Open Graph 配置(SEO)
     links:
 
 marked:

@@ -1,26 +1,4 @@
-<meta property="og:title" content="<%= post.title %>"/>
-<meta property="og:description" content="<%= post.excerpt %>"/>
-<meta property="og:image" content="/logo.png" />
-<meta property="og:url" content="<%= post.permalink %>" />
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Novus`Wiki">
-<% if (theme.plugins.mathjax && post.mathjax && !index) { %>
-    <!-- <%- partial('plugin/mathjax') %> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
-
-    <script src="https://cdn.bootcss.com/mathjax/2.7.2/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script>
-        window.MathJax = {
-          tex: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']],
-            displayMath: [['$$', '$$'], ['\\[', '\\]']]
-          }
-        };
-      </script>
-<% } %>
-<!-- mermaid config -->
-<!-- <% if (theme.plugins.mermaid && post.mermaid && !index) { %> -->
-<!-- <% } %> -->
+<meta itemprop="author" content="Novus">
 <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemtype="https://schema.org/BlogPosting">
     <% if (post.referrer) { %>
         <meta name="referrer" content="no-referrer" />

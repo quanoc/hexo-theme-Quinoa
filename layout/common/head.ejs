@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
+<html<%= config.open_language ? " lang=" + config.open_language.substring(0, 2) : ""%>>
 <head>
     <meta charset="utf-8">
     <!-- MathJax 由 postFetch 动态加载，不在 head 中预加载 -->
@@ -44,6 +44,7 @@
         fb_admins:      theme.miscellaneous.open_graph.fb_admins,
         twitter_id:     theme.miscellaneous.open_graph.twitter_id,
         google_plus:    theme.miscellaneous.open_graph.google_plus,
+        language:       config.open_language,
     }) %>
     <%- meta(page) %>
 

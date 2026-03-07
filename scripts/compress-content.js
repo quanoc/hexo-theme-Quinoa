@@ -50,11 +50,14 @@ hexo.extend.filter.register('after_generate', function() {
         // 将压缩后的数据写入路由
         route.set('content.json.gz', compressed);
         
+        // 删除原始的 content.json，只保留压缩版本
+        route.remove('content.json');
+        
         const originalSize = (data.length / 1024).toFixed(2);
         const compressedSize = (compressed.length / 1024).toFixed(2);
         const ratio = ((1 - compressed.length / data.length) * 100).toFixed(1);
         
-        console.log(`[compress-content] content.json: ${originalSize} KB → ${compressedSize} KB (${ratio}% 减少)`);
+        console.log(`[compress-content] content.json: ${originalSize} KB → ${compressedSize} KB (${ratio}% 减少)，已删除原始文件`);
     } catch (err) {
         console.error('[compress-content] 压缩失败:', err.message);
         console.error(err.stack);

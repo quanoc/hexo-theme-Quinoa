@@ -1,6 +1,6 @@
 <% if (['post', 'page', 'tags', 'categories'].includes(page.layout) || page.__index) { %>
 <!DOCTYPE html>
-<html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
+<html<%= config.open_language ? " lang=" + config.open_language.substring(0, 2) : ""%>>
 <head>
     <meta charset="utf-8">
     <title><%= page.title ? page.title + ' | ' + config.title : config.title %></title>
@@ -29,7 +29,7 @@
         url: url,
         description: page.description || config.description,
         site_name: config.title,
-        language: config.language
+        language: config.open_language,
     }) %>
     <style>
     body { margin: 0; padding: 20px; }

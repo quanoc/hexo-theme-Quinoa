@@ -214,11 +214,13 @@
     function gotoLink ($item) {
         if ($item && $item.length) {
             var path = $item.attr('data-url');
-            window.location.hash = `${path}`;
+            // 添加 fullpage=1 参数以触发正确路由
+            var separator = path.indexOf('?') !== -1 ? '&' : '?';
+            var fullPath = path + separator + 'fullpage=1';
+            window.location.hash = fullPath;
             $main.removeClass('show');
             // scroll to top
             $('body, html').animate({ scrollTop: 0 }, 600);
-            //location.href = $item.attr('data-url');
         }
     }
 

@@ -257,10 +257,7 @@
                     mermaid.init(undefined, document.querySelectorAll('.mermaid'));
                 }
                 addPostEventListener(path);
-                // 4. 触发不蒜子统计，并更新PV显示
-                bszCaller.fetch("//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback", function(a) {
-                    bszTag.texts(a), bszTag.shows()
-                })                     
+                // 4. 新版 busuanzi 自动统计，无需手动调用                     
             } catch (error) {
                 console.error(error);
             }

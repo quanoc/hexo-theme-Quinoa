@@ -65,7 +65,22 @@
     <%- js('libs/jquery/plugins/cookie/1.4.1/jquery.cookie') %>
     <%- partial('plugin/scripts', { isHead: true }) %>
     <% if (theme.plugins.busuanzi_count) { %>
-        <!-- <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script> -->
-        <script async src="libs/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <!-- 新版不蒜子统计 - busuanzi.cc -->
+        <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer></script>
     <% } %>
+    
+    <!-- Schema.org 结构化数据 - WebSite -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "<%= config.title %>",
+        "url": "<%= config.url %>",
+        "description": "<%= config.description || '' %>",
+        "author": {
+            "@type": "Person",
+            "name": "<%= config.author || '' %>"
+        }
+    }
+    </script>
 </head>

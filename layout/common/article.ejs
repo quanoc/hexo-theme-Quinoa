@@ -1,5 +1,32 @@
-<meta itemprop="author" content="Novus">
-<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemtype="https://schema.org/BlogPosting">
+<% if (!index) { %>
+<!-- Schema.org 结构化数据 - BlogPosting -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "<%= post.title %>",
+    "url": "<%= post.permalink %>",
+    "datePublished": "<%= post.date.toISOString() %>",
+    "dateModified": "<%= (post.updated || post.date).toISOString() %>",
+    "author": {
+        "@type": "Person",
+        "name": "<%= config.author || '' %>"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "<%= config.title %>",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "<%= config.url %>/logo.png"
+        }
+    },
+    "image": "<%= post.photos && post.photos.length ? post.photos[0] : (post.banner ? post.banner : config.url + '/logo.png') %>"<% if (post.keywords || (post.tags && post.tags.length)) { %>,
+    "keywords": "<%= post.keywords ? (Array.isArray(post.keywords) ? post.keywords.join(',') : post.keywords) : post.tags.toArray().map(tag => tag.name).join(',') %>"
+    <% } %>
+}
+</script>
+<% } %>
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>">
     <% if (post.referrer) { %>
         <meta name="referrer" content="no-referrer" />
     <% } %>
@@ -20,18 +47,12 @@
                         <%- partial('post/category') %>
                         <%- partial('post/tag') %>
                         <%- partial('post/date', { class_name: 'article-date', date_format: null }) %>
-                        <meta itemprop="datePublished" content="<%= post.date.toISOString() %>">
-                        <% if (post.updated) { %>
-                        <meta itemprop="dateModified" content="<%= post.updated.toISOString() %>">
-                        <% } else { %>
-                        <meta itemprop="dateModified" content="<%= post.date.toISOString() %>">
-                        <% } %>
-                        <% if (post.tags && post.tags.length) { %>
-                        <meta itemprop="keywords" content="<%= post.tags.toArray().map(tag => tag.name).join(',') %>">
+<% if (post.tags && post.tags.length) { %>
+                        <meta name="keywords" content="<%= post.tags.toArray().map(tag => tag.name).join(',') %>">
                         <% } %>
                         <% if (theme.plugins.busuanzi_count) { %>
                             <i class="fa fa-bar-chart"></i>
-                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                            <span id="busuanzi_page_pv">...</span>    
                         <% } %>
                         <% if (theme.history_control.enable) { 
                             let repertory_address = `${theme.history_control.server_link}/${theme.history_control.user}/${theme.history_control.repertory}`;
@@ -67,39 +88,6 @@
                     </div>
                 <% } %>
                 <%- partial('post/title', { class_name: 'article-title' }) %>
-                <% if (!index && theme.customize && theme.customize.profile && theme.customize.profile.author) { %>
-                <div itemprop="author" itemscope itemtype="https://schema.org/Person">
-                    <meta itemprop="name" content="<%= theme.customize.profile.author %>">
-                    <% if (theme.customize.profile.follow) { %>
-                    <meta itemprop="url" content="<%= theme.customize.profile.follow %>">
-                    <% } %>
-                    <% if (theme.customize.profile.avatar) { %>
-                    <meta itemprop="image" content="<%= config.url %><%- url_for(theme.customize.profile.avatar) %>">
-                    <% } else if (theme.customize.profile.gravatar) { %>
-                    <meta itemprop="image" content="<%= gravatar(theme.customize.profile.gravatar, 128) %>">
-                    <% } %>
-                </div>
-                <% } %>
-                <% if (post.photos && post.photos.length) { %>
-                <meta itemprop="image" content="<%= post.photos[0] %>">
-                <% } else if (post.banner) { %>
-                <meta itemprop="image" content="<%= post.banner %>">
-                <% } else { %>
-                <meta itemprop="image" content="<%= config.url %>/logo.png">
-                <% } %>
-                <meta itemprop="url" content="<%= post.permalink %>">
-                <meta itemprop="mainEntityOfPage" content="<%= post.permalink %>">
-                <% if (config.description) { %>
-                <meta itemprop="description" content="<%= post.description || post.excerpt || config.description %>">
-                <% } %>
-                <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
-                    <meta itemprop="name" content="<%= config.title %>">
-                    <% if (theme.customize && theme.customize.favicon) { %>
-                    <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-                        <meta itemprop="url" content="<%= config.url %><%- url_for(theme.customize.favicon) %>">
-                    </div>
-                    <% } %>
-                </div>
             </header>
         <% } %>
         <%- partial('post/gallery') %>

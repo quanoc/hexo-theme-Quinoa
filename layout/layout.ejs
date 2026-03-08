@@ -49,25 +49,13 @@
         <%- js('libs/lightgallery/js/lg-zoom.min') %>
     <% } %>
     <% if (theme.plugins.busuanzi_count) { %>
-        <script async src="<%- url_for('libs/busuanzi/2.3/busuanzi.pure.mini.js') %>"></script>
+        <!-- 新版不蒜子统计 - busuanzi.cc -->
+        <script src="//cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer></script>
     <% } %>
 </head>
 <body>
     <section id="post-main"><%- body %></section>
     <%- js('js/main') %>
-    <% if (theme.plugins.busuanzi_count) { %>
-    <script>
-    // 手动触发不蒜子统计
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof bszCaller === 'object' && typeof bszTag === 'object') {
-            bszCaller.fetch("//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback", function(a) {
-                bszTag.texts(a);
-                bszTag.shows();
-            });
-        }
-    });
-    </script>
-    <% } %>
     <script>
     function hexToRgb(hex) {
       if (!hex) return null;

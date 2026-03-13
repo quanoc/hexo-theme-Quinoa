@@ -478,11 +478,13 @@
                 var expanded = icon.hasClass(iconAllExpandClass);
                 icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
                 if(expanded) {
-                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    // 使用与文件夹点击事件一致的图标类名
+                    $('#sidebar .fa.' + iconFolderCloseClass).removeClass(iconFolderCloseClass).addClass(iconFolderOpenClass);
                     $('#categories li ul').slideDown({ duration: 100 });
                     icon.addClass(iconAllPackClass);
                 } else {
-                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    // 使用与文件夹点击事件一致的图标类名
+                    $('#sidebar .fa.' + iconFolderOpenClass).removeClass(iconFolderOpenClass).addClass(iconFolderCloseClass);
                     $('#categories li ul').slideUp({ duration: 100 });
                     icon.addClass(iconAllExpandClass);
                 }

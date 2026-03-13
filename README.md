@@ -90,17 +90,38 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- **Hexo**: v3.6 or higher
 - **Node.js**: v18+ recommended
 - **npm**: v10+ recommended
 
 ### Installation
 
+#### Step 1: Install Hexo CLI
+
+If you don't have Hexo installed globally:
+
 ```bash
-# 1. Navigate to your Hexo site directory
+# Install Hexo CLI globally
+pnpm install -g hexo-cli
+
+# Verify installation
+hexo --version
+```
+
+#### Step 2: Create a New Hexo Site
+
+```bash
+# Create a new Hexo site
+hexo init your-hexo-site
 cd your-hexo-site
 
-# 2. Clone the theme
+# Install dependencies
+pnpm install
+```
+
+#### Step 3: Install Quinoa Theme
+
+```bash
+# 1. Clone the theme into themes directory
 git clone https://github.com/quanoc/hexo-theme-Quinoa.git themes/Quinoa
 
 # 3. Copy required template files
@@ -111,10 +132,28 @@ cp -rf themes/Quinoa/_scaffolds/* scaffolds/
 cp themes/Quinoa/_config.yml.example themes/Quinoa/_config.yml
 
 # 5. Install required plugins
-npm install --save hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink hexo-permalink-pinyin
+pnpm add hexo-autonofollow hexo-directory-category hexo-generator-feed hexo-generator-json-content hexo-generator-sitemap hexo-abbrlink hexo-generator-archive hexo-generator-category hexo-generator-tag hexo-renderer-ejs hexo-renderer-kramed hexo-renderer-stylus
 ```
 
 ### Enable the Theme
+
+#### Option 1: Command Line (Recommended)
+
+```bash
+# Replace 'landscape' with 'Quinoa' in _config.yml
+# For macOS:
+sed -i '' 's/theme: landscape/theme: Quinoa/' _config.yml
+LINE=$(grep -n "index_generator:" _config.yml | head -1 | cut -d: -f1) && NEXT=$((LINE + 1)) && sed -i '' "${NEXT}s/.*/  path: 'list'/" _config.yml
+# For Linux:
+# sed -i 's/theme: landscape/theme: Quinoa/' _config.yml
+# LINE=$(grep -n "index_generator:" _config.yml | head -1 | cut -d: -f1) && NEXT=$((LINE + 1)) && sed -i '' "${NEXT}s/.*/  path: 'list'/" _config.yml
+
+
+# Or if theme line doesn't exist, add it (macOS version)
+sed -i '' '/^theme:/d' _config.yml && echo 'theme: Quinoa' >> _config.yml
+```
+
+#### Option 2: Manual Edit
 
 Edit your site's `_config.yml`:
 

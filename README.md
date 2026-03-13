@@ -29,6 +29,14 @@
 
 ---
 
+## 🌟 Highlights
+
+**Cross-Platform** 📱💻 - Perfectly adapted for desktop, tablet, and mobile. Access your knowledge base anytime, anywhere  
+**Lightning Fast** ⚡ - SPA navigation without refresh, 40% faster first-screen rendering, static site instant loading  
+**User-Friendly** 🎯 - Native Markdown writing, hierarchical category management, focus on content without distractions  
+
+---
+
 ## ✨ Features
 
 ### 🧭 Dual-Mode Routing System

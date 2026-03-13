@@ -143,17 +143,49 @@
     });
 
     const sidebarToggle = function() {
-        $('#main').toggleClass('collapsed');
-        $('#sidebar').toggleClass('collapsed');
-        $('.page-indent').toggleClass('collapsed');
-        $('.article-meta').toggleClass('collapsed');
-        $('.article-more-link').toggleClass('collapsed');
+        // 判断是否是移动端小屏幕 (mq-mini: max-width: 559px)
+        const isMiniScreen = $(window).width() <= 559;
+        
+        if (isMiniScreen) {
+            // 小屏幕下使用 expanded 类来控制侧边栏显示/隐藏
+            $('#sidebar').toggleClass('expanded');
+        } else {
+            // 其他屏幕使用 collapsed 类
+            $('#main').toggleClass('collapsed');
+            $('#sidebar').toggleClass('collapsed');
+            $('.page-indent').toggleClass('collapsed');
+            $('.article-meta').toggleClass('collapsed');
+            $('.article-more-link').toggleClass('collapsed');
+        }
         $('#toggle-sidebar-btn').toggleClass('fa-angle-left').toggleClass('fa-angle-right');
     }
 
     $(document).ready(function() {
+        // 根据屏幕宽度初始化箭头方向
+        const isMiniScreen = $(window).width() <= 559;
+        if (isMiniScreen) {
+            // 小屏幕下侧边栏默认隐藏，箭头应指向右（表示可展开）
+            $('#toggle-sidebar-btn').removeClass('fa-angle-left').addClass('fa-angle-right');
+        }
+        
         $('#toggle-sidebar').on('click', function() {
             sidebarToggle()
+        });
+        
+        // 小屏幕下点击页面其他区域关闭侧边栏
+        $(document).on('click', function(e) {
+            const isMiniScreen = $(window).width() <= 559;
+            if (isMiniScreen) {
+                const $sidebar = $('#sidebar');
+                const $toggleBtn = $('#toggle-sidebar');
+                // 如果点击的不是侧边栏内部且不是切换按钮，则关闭侧边栏
+                if ($sidebar.hasClass('expanded') && 
+                    !$sidebar.is(e.target) && $sidebar.has(e.target).length === 0 &&
+                    !$toggleBtn.is(e.target) && $toggleBtn.has(e.target).length === 0) {
+                    $sidebar.removeClass('expanded');
+                    $('#toggle-sidebar-btn').removeClass('fa-angle-left').addClass('fa-angle-right');
+                }
+            }
         });
     });
 

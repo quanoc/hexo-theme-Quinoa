@@ -449,9 +449,7 @@ $article-share-link
 /* topic section */
 .toc-article
     background #F9F9F9
-    //margin -3em 0 0 0
     padding 1em
-    //border: 1px solid #000
     border-radius 0px
     .toc-title
         font-size 120%
@@ -498,6 +496,132 @@ ol.toc
         &:hover
             color color-theme
             transition color .3s ease-out
+
+/* TOC 包装器 - 包含 TOC 和切换按钮 */
+.toc-wrapper
+    position fixed
+    right 0
+    top 100px
+    z-index 100
+    display flex
+    align-items flex-start
+    transition transform 0.3s ease
+
+/* TOC 切换按钮 */
+.toc-toggle-btn
+    position absolute
+    left 0
+    top 15px
+    width 12px
+    height 32px
+    background-color #f7f7f7
+    border 1px solid #e0e0e0
+    border-left none
+    border-right none
+    border-radius 0 6px 6px 0
+    cursor pointer
+    display flex
+    align-items center
+    justify-content center
+    z-index 101
+    padding 0
+    &:hover
+        background-color #e8e8e8
+    #toc-toggle-icon
+        color #38b7ea
+        font-size 14px
+        transition transform 0.3s ease
+
+/* TOC 展开状态 - 按钮在 TOC 左侧 */
+.toc-wrapper.expanded
+    transform translateX(0)
+    #toc.toc-article
+        transform translateX(0)
+        opacity 1
+    .toc-toggle-btn
+        left 0
+    /* 展开时箭头旋转180度（指向右，表示点击收起） */
+    #toc-toggle-icon
+        transform rotate(180deg)
+
+/* TOC 收起状态 - 整体收起到右侧，只显示按钮 */
+.toc-wrapper.collapsed
+    transform translateX(100%)
+    margin-left 20px
+    #toc.toc-article
+        transform translateX(0)
+        opacity 0
+    .toc-toggle-btn
+        left -20px
+        border-radius 6px 0 0 6px
+        box-shadow -2px 2px 6px rgba(0, 0, 0, 0.1)
+    /* 收起时箭头正常（指向左，表示点击展开） */
+    #toc-toggle-icon
+        transform rotate(0deg)
+
+/* 单页模式下的 TOC 样式 - 固定在文章右侧 */
+.article-type-post > .toc-wrapper > #toc.toc-article,
+.article-type-page > .toc-wrapper > #toc.toc-article
+    width 195px
+    max-height calc(100vh - 150px)
+    background #F9F9F9
+    padding 15px
+    border-radius 4px 0 0 4px
+    box-shadow 0 2px 8px rgba(0, 0, 0, 0.1)
+    overflow-y auto
+    transition transform 0.3s ease, opacity 0.3s ease
+    /* 隐藏滚动条但保持滚动功能 */
+    scrollbar-width none /* Firefox */
+    -ms-overflow-style none /* IE 10+ */
+    &::-webkit-scrollbar
+        display none /* Chrome, Safari, Opera */
+    .toc-title
+        font-size 14px
+        font-weight bold
+        margin-bottom 10px
+        display block
+        border-bottom 1px solid #ddd
+        padding-bottom 8px
+    .toc
+        margin 0
+        padding 0
+        li
+            list-style-type none
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+            max-width 100%
+        a        
+            text-decoration none
+            font-size 12px
+            display block
+            text-overflow ellipsis
+            white-space nowrap
+            &:hover
+                color #666
+    .toc-child
+        padding-left 12px
+    .toc-link
+        margin 3px 0
+
+/* TOC 内容区域收起/展开动画 */
+.toc-content
+    overflow hidden
+    transition max-height 0.3s ease, opacity 0.3s ease
+    transform-origin bottom
+    
+.toc-content.expanded
+    max-height 1000px
+    opacity 1
+    
+.toc-content.collapsed
+    max-height 0
+    opacity 0
+
+/* 响应式：在较小屏幕上隐藏固定 TOC */
+@media mq-tablet
+    .toc-wrapper
+        display none
 
 /* lightgallery */
 .lg-outer
@@ -562,3 +686,14 @@ ol.toc
         left: 0
         right: auto
         border-radius: 0 8px 8px 0
+
+.article-inner .pre-code
+    background: #f1f5f9
+    padding: 12px 20px
+    border-radius: 6px
+    font-family: 'Monaco', 'Menlo', monospace
+    font-size: 13px
+    color: #334155
+    line-height: 1.6
+    border-left: 3px solid #eb9f84
+    overflow-x: auto

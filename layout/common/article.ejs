@@ -36,6 +36,23 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
         <script src="https://d3js.org/d3.v7.min.js"></script>
     <% } %>
+    <% if (!index && (post.toc || post.encrypt == true)) { %>
+        <div id="toc-wrapper" class="toc-wrapper">
+            <button id="toc-toggle-btn" class="toc-toggle-btn" title="收起/展开目录">
+                <span id="toc-toggle-icon" class="fa fa-angle-left"></span>
+            </button>
+            <div id="toc" class="toc-article" <% if (post.encrypt == true) { %>style="display:none" <% }%>>
+                <strong class="toc-title" id="toc-title" style="cursor: pointer;"><%= __('article.catalogue') %><span id="toc-title-icon" class="fa fa-angle-down" style="margin-left: 8px; font-size: 12px;"></span></strong>
+                <div id="toc-content" class="toc-content">
+                    <% if (post.encrypt == true) { %>
+                        <%- toc(post.origin || '', {list_number: false}) %>
+                    <% } else { %>
+                        <%- toc(post.content, {list_number: false}) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    <% } %>
     <div class="article-inner post-body">
         <% if (post.banner) { %>
             <%- partial('post/banner') %>
@@ -108,17 +125,6 @@
                     <p><%- post.content.substring(0, br_position + 1) %><p>
                 <% } %>
             <% } %>
-        <% } else { %>
-            <% if (post.toc) { %>
-                <div id="toc" class="toc-article"  <% if (post.encrypt == true) { %>style="display:none" <% }%>>
-                <strong class="toc-title"><%= __('article.catalogue') %></strong>
-                    <% if (post.encrypt == true) { %>
-                        <%- toc(post.origin, {list_number: false}) %>
-                    <% } else { %>
-                        <%- toc(post.content, {list_number: false}) %>
-                    <% } %>
-                </div>
-            <% } %>
         <% } %>
         <% if (show_all_content) { %>
             <%- post.content %>
@@ -180,3 +186,133 @@
     padding: 10px 5px;
 }
 </style>
+
+<% if (!index && (post.toc || post.encrypt == true)) { %>
+<!-- TOC 收起/展开功能 -->
+<script data-pjax>
+(function() {
+    // 初始化 TOC 切换功能的函数
+    function initTocToggle() {
+        var tocWrapper = document.getElementById('toc-wrapper');
+        var tocToggleBtn = document.getElementById('toc-toggle-btn');
+        var tocTitle = document.getElementById('toc-title');
+        var tocContent = document.getElementById('toc-content');
+        var tocTitleIcon = document.getElementById('toc-title-icon');
+        
+        if (!tocWrapper || !tocToggleBtn) return;
+        
+        // 检查本地存储中的状态
+        var isCollapsed = localStorage.getItem('toc-collapsed') === 'true';
+        
+        // 初始化状态 - 只操作 wrapper 的 class
+        if (isCollapsed) {
+            tocWrapper.classList.add('collapsed');
+            tocWrapper.classList.remove('expanded');
+        } else {
+            tocWrapper.classList.add('expanded');
+            tocWrapper.classList.remove('collapsed');
+        }
+        
+        // 点击切换按钮
+        tocToggleBtn.addEventListener('click', function() {
+            var isNowCollapsed = tocWrapper.classList.contains('expanded');
+            
+            if (isNowCollapsed) {
+                // 收起
+                tocWrapper.classList.add('collapsed');
+                tocWrapper.classList.remove('expanded');
+                localStorage.setItem('toc-collapsed', 'true');
+            } else {
+                // 展开
+                tocWrapper.classList.add('expanded');
+                tocWrapper.classList.remove('collapsed');
+                localStorage.setItem('toc-collapsed', 'false');
+            }
+        });
+        
+        // 点击 toc-title 收起/展开目录内容
+        if (tocTitle && tocContent) {
+            tocTitle.addEventListener('click', function() {
+                var isContentCollapsed = tocContent.classList.contains('collapsed');
+                
+                if (isContentCollapsed) {
+                    // 展开
+                    tocContent.classList.remove('collapsed');
+                    tocContent.classList.add('expanded');
+                    if (tocTitleIcon) {
+                        tocTitleIcon.classList.remove('fa-angle-up');
+                        tocTitleIcon.classList.add('fa-angle-down');
+                    }
+                } else {
+                    // 收起
+                    tocContent.classList.add('collapsed');
+                    tocContent.classList.remove('expanded');
+                    if (tocTitleIcon) {
+                        tocTitleIcon.classList.remove('fa-angle-down');
+                        tocTitleIcon.classList.add('fa-angle-up');
+                    }
+                }
+            });
+            
+            // 初始化状态
+            tocContent.classList.add('expanded');
+        }
+    }
+    
+    // 立即执行初始化
+    initTocToggle();
+    
+    // 同时提供一个全局函数，供整页模式手动调用
+    window.initTocToggle = initTocToggle;
+})();
+</script>
+
+<% if (post.encrypt == true) { %>
+<!-- 加密文章 TOC 显示控制 -->
+<script data-pjax>
+(function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    
+    // 检查文章是否已解密（文章内容是否可见且有实际内容）
+    function checkDecrypted() {
+        var articleEntry = document.querySelector('.article-entry');
+        if (!articleEntry) return false;
+        
+        // 检查内容是否可见且有实际内容（超过100字符）
+        var hasContent = articleEntry.innerHTML.length > 100;
+        var isVisible = articleEntry.offsetParent !== null;
+        
+        return hasContent && isVisible;
+    }
+    
+    // 根据解密状态显示/隐藏 TOC
+    function updateTocVisibility() {
+        if (checkDecrypted()) {
+            toc.style.display = 'block';
+        } else {
+            toc.style.display = 'none';
+        }
+    }
+    
+    // 初始检查
+    updateTocVisibility();
+    
+    // 监听点击事件（解密/加密按钮）
+    document.addEventListener('click', function() {
+        // 延迟检查，等待解密/加密操作完成
+        setTimeout(updateTocVisibility, 100);
+        setTimeout(updateTocVisibility, 500);
+    });
+    
+    // 提供全局函数供外部调用
+    window.showEncryptedToc = function() {
+        toc.style.display = 'block';
+    };
+    window.hideEncryptedToc = function() {
+        toc.style.display = 'none';
+    };
+})();
+</script>
+<% } %>
+<% } %>

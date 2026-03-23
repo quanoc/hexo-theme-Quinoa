@@ -21,7 +21,7 @@
         }
     },
     "image": "<%= post.photos && post.photos.length ? post.photos[0] : (post.banner ? post.banner : config.url + '/logo.png') %>"<% if (post.keywords || (post.tags && post.tags.length)) { %>,
-    "keywords": "<%= post.keywords ? (Array.isArray(post.keywords) ? post.keywords.join(',') : post.keywords) : post.tags.toArray().map(tag => tag.name).join(',') %>"
+    "keywords": "<%= post.keywords ? (Array.isArray(post.keywords) ? post.keywords.join(',') : post.keywords) : (post.tags && typeof post.tags.toArray === 'function' ? post.tags.toArray().map(tag => tag.name).join(',') : (Array.isArray(post.tags) ? post.tags.map(tag => tag.name || tag).join(',') : '')) %>"
     <% } %>
 }
 </script>
@@ -65,7 +65,7 @@
                         <%- partial('post/tag') %>
                         <%- partial('post/date', { class_name: 'article-date', date_format: null }) %>
 <% if (post.tags && post.tags.length) { %>
-                        <meta name="keywords" content="<%= post.tags.toArray().map(tag => tag.name).join(',') %>">
+                        <meta name="keywords" content="<%= typeof post.tags.toArray === 'function' ? post.tags.toArray().map(tag => tag.name).join(',') : (Array.isArray(post.tags) ? post.tags.map(tag => tag.name || tag).join(',') : '') %>">
                         <% } %>
                         <% if (theme.plugins.busuanzi_count) { %>
                             <i class="fa fa-bar-chart"></i>

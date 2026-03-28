@@ -21,7 +21,7 @@ customize:
         author_title: Designer & Programmer
         location: Beijing, China
         follow: https://github.com/quanoc/
-    highlight: zenburn #monokai
+    highlight: minimal #monokai
     sidebar: left # sidebar position, options: left, right
     category_perExpand: false # enable article categories list per expanding
     thumbnail: true # enable posts thumbnail, options: true, false

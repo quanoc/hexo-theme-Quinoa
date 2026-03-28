@@ -1,7 +1,12 @@
 <% if (post.date) { %>
     <div class="<%= class_name %>">
         <i class="fa fa-calendar"></i>
-        <a href="<%- url_for(post.path) %>" onclick="onclickRoute(event, '<%- url_for(post.path) %>')">
+        <% 
+        const year = post.date.year();
+        const month = post.date.format('MM');
+        const archiveUrl = `/archives/${year}/${month}/`;
+        %>
+        <a href="<%= archiveUrl %>" onclick="onclickRoute(event, '<%= archiveUrl %>')">
             <time datetime="<%= date_xml(post.date) %>" itemprop="datePublished"><%= date(post.date, date_format) %></time>
         </a>
     </div>
